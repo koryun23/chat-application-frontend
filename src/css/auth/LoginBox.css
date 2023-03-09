@@ -1,0 +1,68 @@
+.login-box {
+    background-color: white;
+    border-radius: 10px;
+    margin: auto;
+    width: 25%;
+    height: 70%;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.login-box-description {
+    color: rgb(90, 90, 90);
+    text-align: center;
+    font-family: cursive;
+}
+
+.login-form {
+    overflow: hidden;
+}
+
+.input {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 25px;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+.input:active {
+    border:none;
+}
+
+.login-button {
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+    height: 10%;
+    border-radius: 30px;
+    border: 0ch;
+    margin-top: 60px;
+    background-image: linear-gradient(to right, rgb(138, 194, 224), rgb(164, 18, 177));
+    color: white;
+    font-size: 15px;
+    font-weight: bolder;
+}
+
+.create-account-text {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+    font-size: 15px;
+    color: rgb(90, 90, 90)
+}
+
+.create-account-link {
+    text-decoration: none;
+    color: rgb(10, 10, 10);
+}
