@@ -39,7 +39,7 @@ export default function LoginBox(props) {
     }
     return (
         <div className = "login-box">
-            <h1 className="login-box-description">Welcome</h1>
+            <h1 className="login-box-description">Welcome!</h1>
             <form className="login-form">
                 <input type="text" 
                        className="input" 
