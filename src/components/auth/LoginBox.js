@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import "../../css/auth/LoginBox.css";
+import axios from "axios";
 
-const API_URL = "http://localhost:8000";
+const API_URL = "http://localhost:8000/";
 
 export default function LoginBox(props) {
     const [username, setUsername] = useState("");
@@ -24,6 +25,22 @@ export default function LoginBox(props) {
 
     const clickLoginButton = (event) => {
         event.preventDefault();
+        axios.put(API_URL + "auth", {
+            username: username,
+            password: password
+        }).then(res => {
+            console.log(res);
+            const userData = res.data;
+            setFirstName(userData.firstName);
+            setSecondName(userData.secondName);
+            setRoles(userData.userAppRoleTypeList);
+            setToken(userData.token);
+            setErrorMessages([]);
+            setAuth(true);
+        }).catch(err => {
+            console.log(err);
+            setErrorMessages(["Provided credentials are incorrect"]);
+        });
         console.log(username, password);
     }
     return (
@@ -31,16 +48,19 @@ export default function LoginBox(props) {
             <h1 className="login-box-description">Welcome!</h1>
             <form className="login-form">
                 <input type="text" 
-                       className="input" 
+                       className={errorMessages.length == 0 ? "input" : "input error"} 
                        placeholder="Username"
                        onChange={(event) => handleUsernameChange(event)}
                        value={username}/>
                 <input type="password" 
-                       className="input" 
+                       className={errorMessages.length == 0 ? "input" : "input error"} 
                        placeholder="Password"
                        onChange={(event) => handlePasswordChange(event)}
                        value={password}/>
             </form>
+            {
+                errorMessages.length > 0 ? <p className="error-message">{errorMessages[0]}</p> : <br></br>
+            }
             <a className="login-button" onClick={(event) => clickLoginButton(event)} href="/">
                     LOGIN
             </a>

@@ -10,7 +10,7 @@ export default function Auth(props) {
     if(!authenticated) {
         return (
             <div className="login-page">
-                <LoginBox />
+                <LoginBox onLogin={() => authenticated = true}/>
             </div>
         );
     } 
