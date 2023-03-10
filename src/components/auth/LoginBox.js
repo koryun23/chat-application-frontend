@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import "../../css/auth/LoginBox.css";
 
+const API_URL = "http://localhost:8000";
 
 export default function LoginBox(props) {
     const [username, setUsername] = useState("");
