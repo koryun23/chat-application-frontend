@@ -39,17 +39,18 @@
 }
 
 .login-button {
-    margin-left: 10%;
-    margin-right: 10%;
-    width: 80%;
-    height: 10%;
+    padding: 10px;
     border-radius: 30px;
-    border: 0ch;
-    margin-top: 60px;
     background-image: linear-gradient(to right, rgb(138, 194, 224), rgb(164, 18, 177));
     color: white;
     font-size: 15px;
     font-weight: bolder;
+    text-decoration: none;
+    text-align: center;
+    position: absolute;
+    bottom: 180px;
+    left: 30px;
+    right: 30px;
 }
 
 .create-account-text {

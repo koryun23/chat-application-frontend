@@ -29,8 +29,13 @@ export default function LoginBox(props) {
         event.preventDefault();
     }
 
-    const submit = () => {
+    const clickLoginButton = (event) => {
+        event.preventDefault();
         console.log(username, password);
+    }
+
+    const hoverLoginButton = (event) => {
+        
     }
     return (
         <div className = "login-box">
@@ -49,11 +54,11 @@ export default function LoginBox(props) {
                        onChange={(event) => handlePasswordChange(event)}
                        value={password}/>
             </form>
-            <button className="login-button" onClick={() => submit()}>
-                LOGIN
-            </button>
+            <a className="login-button" onClick={(event) => clickLoginButton(event)} onMouseOver={(event) => hoverLoginButton(event)} href="/">
+                    LOGIN
+            </a>
 
-            <p className="create-account-text">Don't have an account? <a className="create-account-link" href="#">Sign up</a></p>
+            <p className="create-account-text">Don't have an account? <a className="create-account-link" href="/">Sign up</a></p>
         </div>
     );
 }
