@@ -21,21 +21,9 @@ export default function LoginBox(props) {
         setPassword(event.target.value);
     }
 
-    const handleUsernameClick = (event) => {
-        event.preventDefault();
-    }
-
-    const handlePasswordClick = (event) => {
-        event.preventDefault();
-    }
-
     const clickLoginButton = (event) => {
         event.preventDefault();
         console.log(username, password);
-    }
-
-    const hoverLoginButton = (event) => {
-        
     }
     return (
         <div className = "login-box">
@@ -44,17 +32,15 @@ export default function LoginBox(props) {
                 <input type="text" 
                        className="input" 
                        placeholder="Username"
-                       onClick={(event) => handleUsernameClick(event)}
-                           onChange={(event) => handleUsernameChange(event)}
+                       onChange={(event) => handleUsernameChange(event)}
                        value={username}/>
                 <input type="password" 
                        className="input" 
                        placeholder="Password"
-                       onClick={(event) => handlePasswordClick(event)} 
                        onChange={(event) => handlePasswordChange(event)}
                        value={password}/>
             </form>
-            <a className="login-button" onClick={(event) => clickLoginButton(event)} onMouseOver={(event) => hoverLoginButton(event)} href="/">
+            <a className="login-button" onClick={(event) => clickLoginButton(event)} href="/">
                     LOGIN
             </a>
 

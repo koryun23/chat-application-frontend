@@ -34,10 +34,6 @@
     border-bottom: 1px solid black;
 }
 
-.input:active {
-    border:none;
-}
-
 .login-button {
     padding: 10px;
     border-radius: 30px;
