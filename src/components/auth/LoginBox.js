@@ -6,14 +6,9 @@ import axios from "axios";
 const API_URL = "http://localhost:8000/";
 
 export default function LoginBox(props) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [secondName, setSecondName] = useState("");
-    const [token, setToken] = useState("");
-    const [roles, setRoles] = useState([]);
-    const [auth, setAuth] = useState(false);
-    const [errorMessages, setErrorMessages] = useState([]);
+    const [username = "", setUsername] = useState();
+    const [password = "", setPassword] = useState();
+    const [errorMessages = [], setErrorMessages] = useState();
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
@@ -29,14 +24,14 @@ export default function LoginBox(props) {
             username: username,
             password: password
         }).then(res => {
-            console.log(res);
             const userData = res.data;
-            setFirstName(userData.firstName);
-            setSecondName(userData.secondName);
-            setRoles(userData.userAppRoleTypeList);
-            setToken(userData.token);
-            setErrorMessages([]);
-            setAuth(true);
+            console.log(userData);
+            localStorage.setItem("username", userData.username);
+            localStorage.setItem("firstName", userData.firstName);
+            localStorage.setItem("secondName", userData.secondName);
+            localStorage.setItem("role", userData.userAppRoleTypeList[0]);
+            localStorage.setItem("token", userData.token);
+            props.onSuccessfulLogin(userData.userAppRoleTypeList[0]);
         }).catch(err => {
             console.log(err);
             setErrorMessages(["Provided credentials are incorrect"]);
