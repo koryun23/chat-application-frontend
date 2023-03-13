@@ -56,8 +56,12 @@
     background-color: white;
 }
 
+.menu-button:hover {
+    background-color:rgb(232, 232, 232);
+}
+
 .menu-button:active {
-    background-color:rgb(232, 232, 232)
+    background-color:rgb(200, 200, 200);
 }
 
 .search-input {
@@ -86,4 +90,26 @@
     right: 0;
     bottom: 0;
     overflow-y: auto;
+}
+
+.add-chat-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 20px;
+    border: 2px solid transparent;
+    border-radius: 100%; 
+    background-color: rgb(123, 123, 255);
+    color: white;
+}
+
+.add-chat-button:hover {
+    background-color: rgb(153, 153, 255);
+}
+
+.add-chat-button:active {
+    background-color: rgb(103, 103, 255);
+}
+.no-display {
+    display: none
 }

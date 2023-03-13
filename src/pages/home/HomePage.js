@@ -5,13 +5,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 export default function HomePage(props) {
 
+    const [sidebarOnHover, setSidebarOnHover] = useState(false);
+
     const onLogOut = () => {
         localStorage.clear();
     }
 
+    // nav bar options to choose
+    // 1) profile
+    // 2) sign out
+
     return (
         <div className="main">
-            <div className="sidebar">
+            <div className="sidebar" onMouseEnter={() => setSidebarOnHover(true)} onMouseLeave={() => setSidebarOnHover(false)}>
                 <div className="commands">
                     <div className="menu">
                         <button className="menu-button">
@@ -27,12 +33,14 @@ export default function HomePage(props) {
                 <div className="chats">
 
                 </div>
-                
+                <div className="selected-chat">
+                    <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"}>
+                        <FontAwesomeIcon icon={faEdit} size="lg" />
+                    </button>
+                </div>       
             </div>
 
-            <div className="selected-chat">
 
-            </div>
         </div>
     );
 }
