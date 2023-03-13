@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 export default function HomePage(props) {
 
-    const [colorClass, setColorClass] = useState("not-clicked-menu-button-color");
     const onLogOut = () => {
         localStorage.clear();
     }
@@ -28,6 +27,7 @@ export default function HomePage(props) {
                 <div className="chats">
 
                 </div>
+                
             </div>
 
             <div className="selected-chat">
