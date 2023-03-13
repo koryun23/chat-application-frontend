@@ -1,6 +1,6 @@
 import React from "react";
 import "../../css/home/HomePage.css";
-import { faLineChart, faNavicon, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faLineChart, faNavicon, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 export default function HomePage(props) {
@@ -16,7 +16,7 @@ export default function HomePage(props) {
                 <div className="commands">
                     <div className="menu">
                         <button className="menu-button">
-                            <FontAwesomeIcon icon={faNavicon} size="lg"/>
+                            <FontAwesomeIcon icon={faAdd} size="lg"/>
                         </button>
                     </div>
                     <div className="search-bar">
