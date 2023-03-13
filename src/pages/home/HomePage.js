@@ -16,7 +16,7 @@ export default function HomePage(props) {
                 <div className="commands">
                     <div className="menu">
                         <button className="menu-button">
-                            <FontAwesomeIcon icon={faEdit} size="lg"/>
+                            <FontAwesomeIcon icon={faNavicon} size="lg"/>
                         </button>
                     </div>
                     <div className="search-bar">
