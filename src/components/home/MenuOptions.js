@@ -17,7 +17,7 @@ export default function MenuOptions(props) {
             <div className="option-icon">
                 {<FontAwesomeIcon icon={icon} size="lg" />}
             </div>
-            <div className="option-name-area">
+            <div className="option-name">
                 <b>{options[index]}</b>
             </div>
         </div>

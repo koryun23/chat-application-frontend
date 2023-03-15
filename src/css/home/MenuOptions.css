@@ -30,4 +30,10 @@
 .option-icon {
     margin-right: 10%;
     margin-left: 10%;
+    color: rgb(66, 66, 66);
+
+}
+
+.option-name {
+    color: rgb(66, 66, 66);
 }
