@@ -1,0 +1,33 @@
+.show-menu-options {
+    z-index: 1;
+    background-color: rgb(244, 244, 244);
+    box-shadow: 1px 1px 3px 1px;
+    margin: 10px;
+    padding: 5px;
+}
+
+.no-display {
+    display: none;
+}
+
+.menu-option {
+    height: 5%;
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    border-radius: 9px;
+    display: flex;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.menu-option:hover {
+    background-color: rgb(200, 200, 200);
+}
+
+.option-icon {
+    margin-right: 10%;
+    margin-left: 10%;
+}

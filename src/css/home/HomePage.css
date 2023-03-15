@@ -54,6 +54,7 @@
     height: 70%;
     width: 70%;
     background-color: white;
+    cursor: pointer;
 }
 
 .menu-button:hover {
@@ -101,6 +102,7 @@
     border-radius: 100%; 
     background-color: rgb(123, 123, 255);
     color: white;
+    cursor: pointer;
 }
 
 .add-chat-button:hover {
