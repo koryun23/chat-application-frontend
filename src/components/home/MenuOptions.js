@@ -10,17 +10,23 @@ export default function MenuOptions(props) {
     const [icons, setIcons] = useState([faUser, faPowerOff]);
 
     const clickMenuOption = (index) => {
-        console.log(options[index]);
+        const selectedOption = options[index];
+        if(selectedOption == "Profile") {
+
+        } else if(selectedOption == "Sign Out") {
+            localStorage.clear();
+        }
     }
+    
     const menuItems = icons.map((icon, index) => (
-        <div className="menu-option" id={index} onClick={() => clickMenuOption(index)}>
+        <a className="menu-option" id={index} onClick={() => clickMenuOption(index)} href="/">
             <div className="option-icon">
                 {<FontAwesomeIcon icon={icon} size="lg" />}
             </div>
             <div className="option-name">
                 <b>{options[index]}</b>
             </div>
-        </div>
+        </a>
     ));
 
     return (

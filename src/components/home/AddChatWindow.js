@@ -12,14 +12,14 @@ export default function AddChatWindow(props) {
         console.log(options[index]);
     }
     const items = icons.map((icon, index) => (
-        <div className="add-chat-option" id={index} onClick={() => onSelectAddChatOption(index)}>
+        <a className="add-chat-option" id={index} onClick={() => onSelectAddChatOption(index)} href="/">
             <div className="option-icon">
                 <FontAwesomeIcon icon={icon} size="lg"/>
             </div>
             <div className="option-name">
                 <b>{options[index]}</b>
             </div>
-        </div>
+        </a>
     ))
     return (
         <div className={props.showAddChatWindow ? "add-chat-window" : "add-chat-window no-display"}>
