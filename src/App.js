@@ -11,29 +11,29 @@ export default function App() {
   const [role = localStorage.getItem("role"), setRole] = useState();
   
   useEffect(() => {
+    console.log("current role - " + role);
     localStorage.setItem("role", role);
   });
 
-  console.log(role);
   const router = createBrowserRouter([
     {
       path: '/',
       element: (
-        <Navigate to={role ? "/home" : "/auth"} />
+        role != "null" ? <Navigate to="/home"/> : <Navigate to="/auth" />
       )
     },
 
     {
       path: "/auth",
       element: (
-        role ? <Navigate to="/home"/> : <Auth onLogin={(role) => setRole(role)}/>
+        role != "null" ? <Navigate to="/home"/> : <Auth onLogin={(role) => setRole(role)}/>
       )
     },
 
     {
       path: "/home",
       element: (
-        role ? <HomePage onLogOut={() => setRole(null)}/> : <Navigate to="/auth"/>
+        role != "null" ? <HomePage onLogOut={() => setRole(null)}/> : <Navigate to="/auth"/>
       )
     }
   ]
