@@ -4,11 +4,13 @@ import { faAdd, faEdit, faLineChart, faNavicon, faPlus, faSearch } from "@fortaw
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import MenuOptions from "../../components/home/MenuOptions";
+import AddChatWindow from "../../components/home/AddChatWindow";
 
 export default function HomePage(props) {
 
     const [sidebarOnHover, setSidebarOnHover] = useState(false);
     const [showMenuOptions, setShowMenuOptions] = useState(false);
+    const [showAddChatWindow, setShowAddChatWindow] = useState(false);
 
     const onLogOut = () => {
         localStorage.clear();
@@ -20,7 +22,14 @@ export default function HomePage(props) {
 
     const onClickMenu = () => {
         setShowMenuOptions(!showMenuOptions);
+        setShowAddChatWindow(false);
         console.log("clicked");
+    }
+
+    const onClickAddChatButton = () => {
+        setShowAddChatWindow(!showAddChatWindow);
+        setShowMenuOptions(false);
+        console.log("clicked add chat");
     }
     return (
         <div className="main">
@@ -39,8 +48,8 @@ export default function HomePage(props) {
 
                 <div className="chats">
                     <MenuOptions showMenuOptions={showMenuOptions} />
-
-                    <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"}>
+                    <AddChatWindow showAddChatWindow={showAddChatWindow} />
+                    <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
                         <FontAwesomeIcon icon={faEdit} size="lg" />
                     </button>
                 </div>     
