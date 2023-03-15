@@ -19,21 +19,21 @@ export default function App() {
     {
       path: '/',
       element: (
-        role != "null" ? <Navigate to="/home"/> : <Navigate to="/auth" />
+        role && role != "null" ? <Navigate to="/home"/> : <Navigate to="/auth" />
       )
     },
 
     {
       path: "/auth",
       element: (
-        role != "null" ? <Navigate to="/home"/> : <Auth onLogin={(role) => setRole(role)}/>
+        role && role != "null" ? <Navigate to="/home"/> : <Auth onLogin={(role) => setRole(role)}/>
       )
     },
 
     {
       path: "/home",
       element: (
-        role != "null" ? <HomePage onLogOut={() => setRole(null)}/> : <Navigate to="/auth"/>
+        role && role != "null" ? <HomePage onLogOut={() => setRole(null)}/> : <Navigate to="/auth"/>
       )
     }
   ]
