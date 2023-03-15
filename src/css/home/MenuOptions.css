@@ -1,11 +1,12 @@
 .show-menu-options {
     z-index: 2;
     background-color: rgb(244, 244, 244);
-    box-shadow: 1px 1px 3px 1px;
-    width: 96%;
+    box-shadow: 1px 1px 10px 1px;
+    width: 92%;
     margin-left: 2%;
     margin-right: 2%;
     margin-top: 2%;
+    padding: 2%;
 }
 
 .no-display {
