@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider, Route, Link, Navigate } from 'react-router-dom';
 import HomePage from './pages/home/HomePage';
+import SignUp from './pages/signup/SignUp';
 
 export default function App() {
 
@@ -34,6 +35,13 @@ export default function App() {
       path: "/home",
       element: (
         role && role != "null" ? <HomePage onLogOut={() => setRole(null)}/> : <Navigate to="/auth"/>
+      )
+    },
+
+    {
+      path: "/join",
+      element: (
+        <SignUp />
       )
     }
   ]

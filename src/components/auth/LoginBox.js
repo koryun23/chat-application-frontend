@@ -60,7 +60,7 @@ export default function LoginBox(props) {
                     LOGIN
             </a>
 
-            <p className="create-account-text">Don't have an account? <a className="create-account-link" href="/">Sign up</a></p>
+            <p className="create-account-text">Don't have an account? <a className="create-account-link" href="/join">Sign up</a></p>
         </div>
     );
 }
