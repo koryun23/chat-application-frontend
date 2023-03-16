@@ -15,7 +15,6 @@
 }
 
 .user-info {
-    display: flex;
     text-align: center;
     padding: 10px;
 }
@@ -24,7 +23,7 @@
     position: absolute;
     top: 10px;
     bottom: 10px;
-    left: 20%;
+    left: 10%;
 }
 
 .full-name {
@@ -33,9 +32,7 @@
     position: absolute;
     top: 10px;
     bottom: 10px;
-    left: 25%;
-    width: 50%;
-    right: 25%;
+    left: 20%;
     font-family: cursive;
 }
 
