@@ -70,6 +70,7 @@ export default function HomePage(props) {
                     <AddChatWindow showAddChatWindow={showAddChatWindow} 
                                    options = {[
                                     {name: "New Message", icon: faUser, onClick: () => onClickNewMessage()},
+                                    {name: "New Group", icon: faUsers, onClick: () => onClickNewGroup()}
                                    ]}/>
                     <ViewProfileWindow showProfileWindow={showProfileWindow}
                                        profile={{
