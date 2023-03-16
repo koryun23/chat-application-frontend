@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import axios from "axios";
 import "../../css/home/HomePage.css";
 import { faAdd, faEdit, faLineChart, faNavicon, faPlus, faPowerOff, faSearch, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,9 +8,12 @@ import MenuOptions from "../../components/home/MenuOptions";
 import AddChatWindow from "../../components/home/AddChatWindow";
 import ViewProfileWindow from "../../components/home/ViewProfileWindow";
 
+const API_URL = "http://localhost:8000";
+
 export default function HomePage(props) {
 
     const [searchBarPlaceholder, setSearchBarPlaceholder] = useState("");
+    const [searchBarValue, setSearchBarValue] = useState("");
     const [sidebarOnHover, setSidebarOnHover] = useState(false);
     const [showMenuOptions, setShowMenuOptions] = useState(false);
     const [showAddChatWindow, setShowAddChatWindow] = useState(false);
@@ -63,6 +67,30 @@ export default function HomePage(props) {
         searchBarRef.current.focus();
     }
 
+    const onSearchBarChange = (event) => {
+        setSearchBarValue(event.target.value);
+        searchUserWithKeyWord(event.target.value);
+    }
+
+    const searchUserWithKeyWord = (keyWord) => {
+        if(!keyWord) return;
+        console.log(localStorage.getItem("token"));
+        axios.get(API_URL + "/users/" + keyWord, {
+            headers : {
+                "Authorization" : "Bearer " + localStorage.getItem("token"),
+                "Content-Type" : "application/json"
+            },
+            data: {}
+        })
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+
     return (
         <div className="main">
             <div className="sidebar" onMouseEnter={() => setSidebarOnHover(true)} onMouseLeave={() => setSidebarOnHover(false)}>
@@ -77,6 +105,7 @@ export default function HomePage(props) {
                                className="search-input"
                                placeholder={searchBarPlaceholder}
                                ref={searchBarRef}
+                               onChange={(event) => onSearchBarChange(event)}
                         />               
                     </div>
                 </div>
