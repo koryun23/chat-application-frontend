@@ -7,6 +7,7 @@ import { useState } from "react";
 import MenuOptions from "../../components/home/MenuOptions";
 import AddChatWindow from "../../components/home/AddChatWindow";
 import ViewProfileWindow from "../../components/home/ViewProfileWindow";
+import ViewFoundUsers from "../../components/home/ViewFoundUsers";
 
 const API_URL = "http://localhost:8000";
 
@@ -14,10 +15,14 @@ export default function HomePage(props) {
 
     const [searchBarPlaceholder, setSearchBarPlaceholder] = useState("");
     const [searchBarValue, setSearchBarValue] = useState("");
+
     const [sidebarOnHover, setSidebarOnHover] = useState(false);
+
     const [showMenuOptions, setShowMenuOptions] = useState(false);
     const [showAddChatWindow, setShowAddChatWindow] = useState(false);
     const [showProfileWindow, setShowProfileWindow] = useState(false);
+
+    const [foundUsers, setFoundUsers] = useState([]);
 
     const searchBarRef = useRef(null);
 
@@ -68,8 +73,14 @@ export default function HomePage(props) {
     }
 
     const onSearchBarChange = (event) => {
+        setShowProfileWindow(false);
+        setShowAddChatWindow(false);
+        setShowMenuOptions(false);
         setSearchBarValue(event.target.value);
         searchUserWithKeyWord(event.target.value);
+        if(event.target.value == '') {
+            setFoundUsers([]);
+        }
     }
 
     const searchUserWithKeyWord = (keyWord) => {
@@ -84,13 +95,14 @@ export default function HomePage(props) {
         })
         .then(res => {
             console.log(res.data);
+            const users = res.data.userDtoList;
+            setFoundUsers(users.map(user => user));
         })
         .catch(err => {
             console.log(err);
         })
     }
-
-
+    
     return (
         <div className="main">
             <div className="sidebar" onMouseEnter={() => setSidebarOnHover(true)} onMouseLeave={() => setSidebarOnHover(false)}>
@@ -126,6 +138,7 @@ export default function HomePage(props) {
                                         firstName: localStorage.getItem("firstName"),
                                         secondName: localStorage.getItem("secondName")
                                        }}/>
+                    <ViewFoundUsers foundUsers={foundUsers}/>
                     <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
                         <FontAwesomeIcon icon={faEdit} size="lg" />
                     </button>

@@ -28,7 +28,7 @@ export default function MenuOptions(props) {
     ));
 
     return (
-        <div className={props.showMenuOptions ? "show-menu-options" : "show-menu-options no-display"}>
+        <div className={props.showMenuOptions ? "show-menu-options" : "no-display"}>
             {menuItems}
         </div>
     );
