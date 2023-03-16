@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import "../../css/home/HomePage.css";
 import { faAdd, faEdit, faLineChart, faNavicon, faPlus, faPowerOff, faSearch, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,10 +9,13 @@ import ViewProfileWindow from "../../components/home/ViewProfileWindow";
 
 export default function HomePage(props) {
 
+    const [searchBarPlaceholder, setSearchBarPlaceholder] = useState("");
     const [sidebarOnHover, setSidebarOnHover] = useState(false);
     const [showMenuOptions, setShowMenuOptions] = useState(false);
     const [showAddChatWindow, setShowAddChatWindow] = useState(false);
     const [showProfileWindow, setShowProfileWindow] = useState(false);
+
+    const searchBarRef = useRef(null);
 
     const onLogOut = () => {
         localStorage.clear();
@@ -26,6 +29,7 @@ export default function HomePage(props) {
         setShowMenuOptions(!showMenuOptions);
         setShowAddChatWindow(false);
         setShowProfileWindow(false);
+        setSearchBarPlaceholder("");
     }
 
     const onClickAddChatButton = () => {
@@ -38,17 +42,27 @@ export default function HomePage(props) {
         setShowProfileWindow(!showProfileWindow);
         setShowAddChatWindow(false);
         setShowMenuOptions(false);
+        setSearchBarPlaceholder("");
         console.log(showProfileWindow);
 
     }
 
     const onClickNewMessage = () => {
-        console.log("new message");
+        setSearchBarPlaceholder("Search Users");
+        setShowProfileWindow(false);
+        setShowAddChatWindow(false);
+        setShowMenuOptions(false);
+        searchBarRef.current.focus();
     }
 
     const onClickNewGroup = () => {
-        console.log("new group");
+        setSearchBarPlaceholder("Search Users");
+        setShowProfileWindow(false);
+        setShowAddChatWindow(false);
+        setShowMenuOptions(false);
+        searchBarRef.current.focus();
     }
+
     return (
         <div className="main">
             <div className="sidebar" onMouseEnter={() => setSidebarOnHover(true)} onMouseLeave={() => setSidebarOnHover(false)}>
@@ -60,7 +74,10 @@ export default function HomePage(props) {
                     </div>
                     <div className="search-bar">
                         <input type="text"
-                               className="search-input"/>
+                               className="search-input"
+                               placeholder={searchBarPlaceholder}
+                               ref={searchBarRef}
+                        />               
                     </div>
                 </div>
 
