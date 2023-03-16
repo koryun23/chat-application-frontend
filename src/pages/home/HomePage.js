@@ -38,6 +38,8 @@ export default function HomePage(props) {
         setShowProfileWindow(!showProfileWindow);
         setShowAddChatWindow(false);
         setShowMenuOptions(false);
+        console.log(showProfileWindow);
+
     }
 
     const onClickNewMessage = () => {
