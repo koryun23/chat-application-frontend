@@ -6,25 +6,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function MenuOptions(props) {
 
-    const [options, setOptions] = useState(["Profile", "Sign Out"]);
-    const [icons, setIcons] = useState([faUser, faPowerOff]);
-
-    const clickMenuOption = (index) => {
-        const selectedOption = options[index];
-        if(selectedOption == "Profile") {
-
-        } else if(selectedOption == "Sign Out") {
-            localStorage.clear();
-        }
-    }
-    
-    const menuItems = icons.map((icon, index) => (
-        <a className="menu-option" id={index} onClick={() => clickMenuOption(index)} href="/">
+    const menuItems = props.options.map((option, index) => (
+        <div className="menu-option" id={index} onClick={option.onClick}>
+            <div className="option-icon" id={index}>
+                {<FontAwesomeIcon icon={option.icon} size="lg"/>}
+            </div>
+            <div className="option-name" id={index}>
+                <b>{option.name}</b>
+            </div>
+        </div>
+    ));
+    menuItems.push((
+        <a className="menu-option" onClick={() => localStorage.clear()} href="/">
             <div className="option-icon">
-                {<FontAwesomeIcon icon={icon} size="lg" />}
+                <FontAwesomeIcon icon={faPowerOff} size="lg"/>
             </div>
             <div className="option-name">
-                <b>{options[index]}</b>
+                <b>Sign Out</b>
             </div>
         </a>
     ));
