@@ -1,4 +1,4 @@
-.users-window {
+.chats-window {
     z-index: 2;
     background-color: rgb(244, 244, 244);
     box-shadow: 1px 1px 10px 1px;
@@ -7,11 +7,6 @@
     height: 100%;
     width: 100%;
     overflow-y: auto;
-}
-
-.found-users-description {
-    font-family: cursive;
-    text-align: center;
 }
 
 .found-chats-description {

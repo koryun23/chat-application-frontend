@@ -6,7 +6,8 @@ import "../../css/home/ViewProfileWindow.css";
 export default function ViewProfileWindow(props) {
 
     return (
-        <div className={props.showProfileWindow ? "profile-window" : "no-display"}>
+        <div className={props.showProfileWindow ? "profile-window" : "no-display"}
+             onClick={() => props.onClick()}>
             <div className="user-info">
                 <div className="icon">
                     <FontAwesomeIcon icon={faUserCircle} size="lg"/>

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import axios from "axios";
 import "../../css/home/HomePage.css";
 import { faAdd, faEdit, faLineChart, faNavicon, faPlus, faPowerOff, faSearch, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
@@ -8,8 +8,9 @@ import MenuOptions from "../../components/home/MenuOptions";
 import AddChatWindow from "../../components/home/AddChatWindow";
 import ViewProfileWindow from "../../components/home/ViewProfileWindow";
 import ViewFoundUsers from "../../components/home/ViewFoundUsers";
+import ViewFoundChats from "../../components/home/ViewFoundChats";
 
-const API_URL = "http://localhost:8000";
+const API_URL = "http://localhost:8080";
 
 export default function HomePage(props) {
 
@@ -23,6 +24,7 @@ export default function HomePage(props) {
     const [showProfileWindow, setShowProfileWindow] = useState(false);
 
     const [foundUsers, setFoundUsers] = useState([]);
+    const [foundChats, setFoundChats] = useState([]);
 
     const searchBarRef = useRef(null);
 
@@ -38,13 +40,20 @@ export default function HomePage(props) {
         setShowMenuOptions(!showMenuOptions);
         setShowAddChatWindow(false);
         setShowProfileWindow(false);
+        setSearchBarValue("");
         setSearchBarPlaceholder("");
+        setFoundUsers([]);
+        setFoundChats([]);
     }
 
     const onClickAddChatButton = () => {
         setShowAddChatWindow(!showAddChatWindow);
         setShowMenuOptions(false);
         setShowProfileWindow(false);
+        setSearchBarValue("");
+        setSearchBarPlaceholder("");
+        setFoundUsers([]);
+        setFoundChats([]);
     }
 
     const onClickViewProfileWindowButton = () => {
@@ -52,6 +61,9 @@ export default function HomePage(props) {
         setShowAddChatWindow(false);
         setShowMenuOptions(false);
         setSearchBarPlaceholder("");
+        setSearchBarValue("");
+        setFoundUsers([]);
+        setFoundChats([]);
         console.log(showProfileWindow);
 
     }
@@ -61,6 +73,10 @@ export default function HomePage(props) {
         setShowProfileWindow(false);
         setShowAddChatWindow(false);
         setShowMenuOptions(false);
+        setSearchBarValue("");
+        setSearchBarPlaceholder("");
+        setFoundUsers([]);
+        setFoundChats([]);
         searchBarRef.current.focus();
     }
 
@@ -69,6 +85,9 @@ export default function HomePage(props) {
         setShowProfileWindow(false);
         setShowAddChatWindow(false);
         setShowMenuOptions(false);
+        setSearchBarValue("");
+        setFoundUsers([]);
+        setFoundChats([]);
         searchBarRef.current.focus();
     }
 
@@ -77,16 +96,16 @@ export default function HomePage(props) {
         setShowAddChatWindow(false);
         setShowMenuOptions(false);
         setSearchBarValue(event.target.value);
-        searchUserWithKeyWord(event.target.value);
+        searchWithKeyWord(event.target.value);
         if(event.target.value == '') {
             setFoundUsers([]);
         }
     }
 
-    const searchUserWithKeyWord = (keyWord) => {
+    const searchWithKeyWord = (keyWord) => {
         if(!keyWord) return;
         console.log(localStorage.getItem("token"));
-        axios.get(API_URL + "/users/" + keyWord, {
+        axios.get(API_URL + "/search/" + keyWord, {
             headers : {
                 "Authorization" : "Bearer " + localStorage.getItem("token"),
                 "Content-Type" : "application/json"
@@ -96,7 +115,9 @@ export default function HomePage(props) {
         .then(res => {
             console.log(res.data);
             const users = res.data.userDtoList;
+            const chats = res.data.chatDtoList;
             setFoundUsers(users.map(user => user));
+            setFoundChats(chats.map(chat => chat));
         })
         .catch(err => {
             console.log(err);
@@ -138,7 +159,8 @@ export default function HomePage(props) {
                                         firstName: localStorage.getItem("firstName"),
                                         secondName: localStorage.getItem("secondName")
                                        }}/>
-                    <ViewFoundUsers foundUsers={foundUsers}/>
+                    <ViewFoundUsers foundUsers={foundUsers} />
+                    <ViewFoundChats foundChats={foundChats} />
                     <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
                         <FontAwesomeIcon icon={faEdit} size="lg" />
                     </button>
