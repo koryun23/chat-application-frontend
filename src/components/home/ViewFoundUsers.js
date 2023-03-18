@@ -7,7 +7,7 @@ import ViewProfileWindow from "./ViewProfileWindow";
 export default function ViewFoundUsers(props) {
 
     const users = props.foundUsers.map((user, index) => (
-        <ViewProfileWindow showProfileWindow={true}
+        <ViewProfileWindow showProfileWindow={user.username !== localStorage.getItem("username")}
                            profile={user} 
                            id={index} 
                            onClick={() => onClickUser(user)} />
