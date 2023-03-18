@@ -10,9 +10,14 @@ export default function ViewFoundUsers(props) {
         <ViewProfileWindow showProfileWindow={true}
                            profile={user} 
                            id={index} 
-                           onClick={() => console.log("click")}/>
+                           onClick={() => onClickUser(user)} />
 
     ));
+
+    const onClickUser = (user) => {
+        props.onClick(user);
+        console.log(user);
+    }
     
     return (
         <div className={props.foundUsers.length > 0 ? "users-window" : "no-display"}>

@@ -5,7 +5,7 @@ import "../../css/signup/SignUpPage.css";
 import SignUpBox from "../../components/signup/SignUpBox";
 import { Navigate } from "react-router-dom";
 
-const API_URL = "http://localhost:8000/";
+const API_URL = "http://localhost:8080/";
 
 export default function SignUp(props) {
 

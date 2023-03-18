@@ -25,6 +25,8 @@ export default function HomePage(props) {
 
     const [foundUsers, setFoundUsers] = useState([]);
     const [foundChats, setFoundChats] = useState([]);
+    const [selectedUsers, setSelectedUsers] = useState([]);
+    const [mode, setMode] = useState("search");
 
     const searchBarRef = useRef(null);
 
@@ -44,6 +46,8 @@ export default function HomePage(props) {
         setSearchBarPlaceholder("");
         setFoundUsers([]);
         setFoundChats([]);
+        setMode("");
+        setSelectedUsers([]);
     }
 
     const onClickAddChatButton = () => {
@@ -54,6 +58,8 @@ export default function HomePage(props) {
         setSearchBarPlaceholder("");
         setFoundUsers([]);
         setFoundChats([]);
+        setMode("");
+        setSelectedUsers([]);
     }
 
     const onClickViewProfileWindowButton = () => {
@@ -64,6 +70,8 @@ export default function HomePage(props) {
         setSearchBarValue("");
         setFoundUsers([]);
         setFoundChats([]);
+        setMode("");
+        setSelectedUsers([]);
         console.log(showProfileWindow);
 
     }
@@ -77,6 +85,8 @@ export default function HomePage(props) {
         setSearchBarPlaceholder("");
         setFoundUsers([]);
         setFoundChats([]);
+        setMode("new-message");
+        setSelectedUsers([]);
         searchBarRef.current.focus();
     }
 
@@ -88,6 +98,8 @@ export default function HomePage(props) {
         setSearchBarValue("");
         setFoundUsers([]);
         setFoundChats([]);
+        setMode("new-group");
+        setSelectedUsers([]);
         searchBarRef.current.focus();
     }
 
@@ -123,7 +135,47 @@ export default function HomePage(props) {
             console.log(err);
         })
     }
+
+    const selectSingleUser = (user) => {
+        setSelectedUsers([user]);
+        createPersonalChat(user);
+    }
     
+    const addSingleUser = (user) => {
+        const currentUsers = selectedUsers.map(user => user);
+        currentUsers.push(user);
+        setSelectedUsers(currentUsers);
+    }
+
+    const createPersonalChat = (user) => {
+        axios.post(API_URL + "/chat/create", {
+                name : localStorage.getItem("firstName") + " - " + user.firstName,
+                chatType : "PERSONAL"
+            },
+            {headers: {
+                "Authorization" : "Bearer " + localStorage.getItem("token"),
+                "Content-Type" : "application/json"
+            }} 
+        ).then(res => {
+            console.log(res.data);
+            const chatData = res.data;
+            axios.post(API_URL + "/user-chat/create", {
+                chatId: chatData.id,
+                addedUserUsername: user.username,
+                userChatRoleType: "CHAT_ADMIN"
+            }, 
+            {headers: {
+                "Authorization" : "Bearer " + localStorage.getItem("token"),
+                "Content-Type" : "application/json"
+            }}).then(res => {
+                console.log(res);
+            }).catch(err => {
+                console.log(err);
+            })
+        }).catch(err => {
+            console.log(err);
+        });
+    }
     return (
         <div className="main">
             <div className="sidebar" onMouseEnter={() => setSidebarOnHover(true)} onMouseLeave={() => setSidebarOnHover(false)}>
@@ -159,7 +211,7 @@ export default function HomePage(props) {
                                         firstName: localStorage.getItem("firstName"),
                                         secondName: localStorage.getItem("secondName")
                                        }}/>
-                    <ViewFoundUsers foundUsers={foundUsers} />
+                    <ViewFoundUsers foundUsers={foundUsers} onClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} /> 
                     <ViewFoundChats foundChats={foundChats} />
                     <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
                         <FontAwesomeIcon icon={faEdit} size="lg" />
