@@ -23,6 +23,7 @@ export default function HomePage(props) {
     const [showAddChatWindow, setShowAddChatWindow] = useState(false);
     const [showProfileWindow, setShowProfileWindow] = useState(false);
 
+    const [allChats, setAllChats] = useState([]);
     const [foundUsers, setFoundUsers] = useState([]);
     const [foundChats, setFoundChats] = useState([]);
     const [selectedUsers, setSelectedUsers] = useState([]);
@@ -137,8 +138,16 @@ export default function HomePage(props) {
     }
 
     const selectSingleUser = (user) => {
-        setSelectedUsers([user]);
         createPersonalChat(user);
+        setShowProfileWindow(false);
+        setShowAddChatWindow(false);
+        setShowMenuOptions(false);
+        setSearchBarPlaceholder("");
+        setSearchBarValue("");
+        setFoundUsers([]);
+        setFoundChats([]);
+        setMode("");
+        setSelectedUsers([]);
     }
     
     const addSingleUser = (user) => {
@@ -149,7 +158,7 @@ export default function HomePage(props) {
 
     const createPersonalChat = (user) => {
         axios.post(API_URL + "/chat/create", {
-                name : localStorage.getItem("firstName") + " - " + user.firstName,
+                name : localStorage.getItem("username") + " - " + user.username,
                 chatType : "PERSONAL"
             },
             {headers: {
@@ -213,6 +222,7 @@ export default function HomePage(props) {
                                        }}/>
                     <ViewFoundUsers foundUsers={foundUsers} onClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} /> 
                     <ViewFoundChats foundChats={foundChats} />
+                    
                     <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
                         <FontAwesomeIcon icon={faEdit} size="lg" />
                     </button>
