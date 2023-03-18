@@ -11,7 +11,6 @@ export default function ViewFoundUsers(props) {
                            profile={user} 
                            id={index} 
                            onClick={() => onClickUser(user)} />
-
     ));
 
     const onClickUser = (user) => {
@@ -21,7 +20,7 @@ export default function ViewFoundUsers(props) {
     
     return (
         <div className={props.foundUsers.length > 0 ? "users-window" : "no-display"}>
-            <h3 className="found-users-description">Users</h3>
+            <h3 className="found-users-description">{props.description}</h3>
             {users}
         </div>
     );
