@@ -166,21 +166,7 @@ export default function HomePage(props) {
                 "Content-Type" : "application/json"
             }} 
         ).then(res => {
-            console.log(res.data);
-            const chatData = res.data;
-            axios.post(API_URL + "/user-chat/create", {
-                chatId: chatData.id,
-                addedUserUsername: user.username,
-                userChatRoleType: "CHAT_ADMIN"
-            }, 
-            {headers: {
-                "Authorization" : "Bearer " + localStorage.getItem("token"),
-                "Content-Type" : "application/json"
-            }}).then(res => {
-                console.log(res);
-            }).catch(err => {
-                console.log(err);
-            })
+            console.log(res);
         }).catch(err => {
             console.log(err);
         });
@@ -220,7 +206,7 @@ export default function HomePage(props) {
                                         firstName: localStorage.getItem("firstName"),
                                         secondName: localStorage.getItem("secondName")
                                        }}/>
-                    <ViewFoundUsers foundUsers={foundUsers} onClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} description={mode == "new-message" ? "Users to write to" : mode == "new-group" ? "Users to chat with" : "Users"}/> 
+                    <ViewFoundUsers foundUsers={foundUsers} onClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} description={mode == "new-message" ? "Users to write to" : mode == "new-group" ? "Users to add to a group" : searchBarValue == "" ? "" : "Users"}/> 
                     {/* <ViewFoundChats foundChats={foundChats} /> */}
                     
                     <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
