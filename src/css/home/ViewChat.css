@@ -2,20 +2,19 @@
     display: none;
 }
 
-.profile-window {
+.chat-window {
     z-index: 2;
-    background-color: rgb(244, 244, 244);
-    box-shadow: 1px 1px 10px 1px;
+    background-color: rgb(230, 230, 230);
     width: 92%;
     margin-left: 2%;
     margin-right: 2%;
-    margin-top: 2%;
+    margin-top: 2px;
     padding: 2%;
-    height: 12%;
+    height: 10%;
     cursor: pointer;
 }
 
-.user-info {
+.chat-info {
     text-align: center;
     padding: 10px;
 }
@@ -25,18 +24,10 @@
     left: 10%;
 }
 
-.full-name {
+.chat-name {
     font-weight: lighter;
     font-size: 20px;
     position: absolute;
     left: 20%;
     font-family: cursive;
-}
-
-.username {
-    font-size: 25px;
-    padding: 10px;
-    left: 17%;
-    position: absolute;
-    font-weight: lighter;
 }

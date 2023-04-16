@@ -35,6 +35,10 @@ export default function HomePage(props) {
         localStorage.clear();
     }
 
+    useEffect(() => {
+        fetchChats();
+    })
+
     // nav bar options to choose
     // 1) profile
     // 2) sign out
@@ -46,7 +50,6 @@ export default function HomePage(props) {
         setSearchBarValue("");
         setSearchBarPlaceholder("");
         setFoundUsers([]);
-        setFoundChats([]);
         setMode("");
         setSelectedUsers([]);
     }
@@ -58,7 +61,6 @@ export default function HomePage(props) {
         setSearchBarValue("");
         setSearchBarPlaceholder("");
         setFoundUsers([]);
-        setFoundChats([]);
         setMode("");
         setSelectedUsers([]);
     }
@@ -70,7 +72,6 @@ export default function HomePage(props) {
         setSearchBarPlaceholder("");
         setSearchBarValue("");
         setFoundUsers([]);
-        setFoundChats([]);
         setMode("");
         setSelectedUsers([]);
         console.log(showProfileWindow);
@@ -85,7 +86,6 @@ export default function HomePage(props) {
         setSearchBarValue("");
         setSearchBarPlaceholder("");
         setFoundUsers([]);
-        setFoundChats([]);
         setMode("new-message");
         setSelectedUsers([]);
         searchBarRef.current.focus();
@@ -98,7 +98,6 @@ export default function HomePage(props) {
         setShowMenuOptions(false);
         setSearchBarValue("");
         setFoundUsers([]);
-        setFoundChats([]);
         setMode("new-group");
         setSelectedUsers([]);
         searchBarRef.current.focus();
@@ -145,7 +144,6 @@ export default function HomePage(props) {
         setSearchBarPlaceholder("");
         setSearchBarValue("");
         setFoundUsers([]);
-        setFoundChats([]);
         setMode("");
         setSelectedUsers([]);
     }
@@ -168,9 +166,28 @@ export default function HomePage(props) {
         ).then(res => {
             console.log(res);
         }).catch(err => {
+            setSearchBarValue("");
             console.log(err);
         });
     }
+
+    const fetchChats = () => {
+        axios.get(API_URL + "/chat", {
+            headers: {
+                "Authorization" : "Bearer " + localStorage.getItem("token"),
+                "Content-Type" : "application/json"
+            },
+            data: {}
+        }).then(res => {
+            setFoundChats(res.data.chatDtoList);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
+    console.log(foundChats);
+    console.log(sidebarOnHover);
+
     return (
         <div className="main">
             <div className="sidebar" onMouseEnter={() => setSidebarOnHover(true)} onMouseLeave={() => setSidebarOnHover(false)}>
@@ -206,8 +223,8 @@ export default function HomePage(props) {
                                         firstName: localStorage.getItem("firstName"),
                                         secondName: localStorage.getItem("secondName")
                                        }}/>
-                    <ViewFoundUsers foundUsers={foundUsers} onClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} description={mode == "new-message" ? "Users to write to" : mode == "new-group" ? "Users to add to a group" : searchBarValue == "" ? "" : "Users"}/> 
-                    {/* <ViewFoundChats foundChats={foundChats} /> */}
+                    {searchBarValue !== "" && !showProfileWindow && !showMenuOptions && <ViewFoundUsers foundUsers={foundUsers} onClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} description={mode == "new-message" ? "Users to write to" : mode == "new-group" ? "Users to add to a group" : searchBarValue == "" ? "" : "Users"}/> }
+                    {searchBarValue === "" && !showProfileWindow && !showMenuOptions && <ViewFoundChats foundChats={foundChats} />}
                     
                     <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
                         <FontAwesomeIcon icon={faEdit} size="lg" />
