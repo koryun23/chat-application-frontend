@@ -223,8 +223,8 @@ export default function HomePage(props) {
                                         firstName: localStorage.getItem("firstName"),
                                         secondName: localStorage.getItem("secondName")
                                        }}/>
-                    {searchBarValue !== "" && !showProfileWindow && !showMenuOptions && <ViewFoundUsers foundUsers={foundUsers} onClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} description={mode == "new-message" ? "Users to write to" : mode == "new-group" ? "Users to add to a group" : searchBarValue == "" ? "" : "Users"}/> }
-                    {searchBarValue === "" && !showProfileWindow && !showMenuOptions && <ViewFoundChats foundChats={foundChats} />}
+                    {searchBarValue !== "" && !showProfileWindow && !showMenuOptions && !showAddChatWindow && <ViewFoundUsers foundUsers={foundUsers} onClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} description={mode == "new-message" ? "Users to write to" : mode == "new-group" ? "Users to add to a group" : searchBarValue == "" ? "" : "Users"}/> }
+                    {searchBarValue === "" && !showProfileWindow && !showMenuOptions && !showAddChatWindow && <ViewFoundChats foundChats={foundChats} />}
                     
                     <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
                         <FontAwesomeIcon icon={faEdit} size="lg" />
