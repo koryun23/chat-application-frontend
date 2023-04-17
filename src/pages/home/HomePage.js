@@ -22,6 +22,8 @@ export default function HomePage(props) {
     const [showMenuOptions, setShowMenuOptions] = useState(false);
     const [showAddChatWindow, setShowAddChatWindow] = useState(false);
     const [showProfileWindow, setShowProfileWindow] = useState(false);
+    const [showFoundChats, setShowFoundChats] = useState(false);
+    const [showFoundUsers, setShowFoundUserns] = useState(false);
 
     const [allChats, setAllChats] = useState([]);
     const [foundUsers, setFoundUsers] = useState([]);
@@ -31,17 +33,13 @@ export default function HomePage(props) {
 
     const searchBarRef = useRef(null);
 
+    useEffect(() => {
+        fetchChats();
+    }, []);
+
     const onLogOut = () => {
         localStorage.clear();
     }
-
-    useEffect(() => {
-        fetchChats();
-    })
-
-    // nav bar options to choose
-    // 1) profile
-    // 2) sign out
 
     const onClickMenu = () => {
         setShowMenuOptions(!showMenuOptions);
@@ -165,6 +163,7 @@ export default function HomePage(props) {
             }} 
         ).then(res => {
             console.log(res);
+            fetchChats();
         }).catch(err => {
             setSearchBarValue("");
             console.log(err);
@@ -179,7 +178,7 @@ export default function HomePage(props) {
             },
             data: {}
         }).then(res => {
-            setFoundChats(res.data.chatDtoList);
+            setAllChats(res.data.chatDtoList);
         }).catch(err => {
             console.log(err);
         })
@@ -223,8 +222,14 @@ export default function HomePage(props) {
                                         firstName: localStorage.getItem("firstName"),
                                         secondName: localStorage.getItem("secondName")
                                        }}/>
-                    {searchBarValue !== "" && !showProfileWindow && !showMenuOptions && !showAddChatWindow && <ViewFoundUsers foundUsers={foundUsers} onClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} description={mode == "new-message" ? "Users to write to" : mode == "new-group" ? "Users to add to a group" : searchBarValue == "" ? "" : "Users"}/> }
-                    {searchBarValue === "" && !showProfileWindow && !showMenuOptions && !showAddChatWindow && <ViewFoundChats foundChats={foundChats} />}
+                    {searchBarValue !== "" && !showProfileWindow && !showMenuOptions && !showAddChatWindow && 
+                    <ViewFoundUsers foundUsers={foundUsers} 
+                                    foundChats={foundChats} 
+                                    onUserClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} 
+                                    mode={mode} 
+                                    searchBarValue={searchBarValue}
+                                    /> }
+                    {searchBarValue === "" && !showProfileWindow && !showMenuOptions && !showAddChatWindow && <ViewFoundChats foundChats={allChats} />}
                     
                     <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
                         <FontAwesomeIcon icon={faEdit} size="lg" />

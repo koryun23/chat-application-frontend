@@ -103,6 +103,7 @@
     background-color: rgb(123, 123, 255);
     color: white;
     cursor: pointer;
+    z-index: 5;
 }
 
 .add-chat-button:hover {
