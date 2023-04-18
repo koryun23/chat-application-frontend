@@ -262,7 +262,7 @@ export default function HomePage(props) {
                     </button>
                 </div>     
             </div>
-            <div className="selected-chat">
+            <div className={selectedChat !== null ? "selected-chat" : "no-display"}>
                 <div className="top-panel">
                     <div className="top-panel-chat-name">
                         {getConvertedChatName(selectedChat)}
