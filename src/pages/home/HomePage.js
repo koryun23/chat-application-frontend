@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import axios from "axios";
 import "../../css/home/HomePage.css";
-import { faAdd, faEdit, faLineChart, faNavicon, faPlus, faPowerOff, faSearch, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faEdit, faLineChart, faNavicon, faPaperPlane, faPlus, faPowerOff, faSearch, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import MenuOptions from "../../components/home/MenuOptions";
@@ -15,7 +15,9 @@ const API_URL = "http://localhost:8080";
 export default function HomePage(props) {
 
     const [searchBarPlaceholder, setSearchBarPlaceholder] = useState("");
+    const [messageInputPlaceholder, setMessageInputPlaceholder] = useState("Message");
     const [searchBarValue, setSearchBarValue] = useState("");
+    const [messageValue, setMessageValue] = useState("");
 
     const [sidebarOnHover, setSidebarOnHover] = useState(false);
 
@@ -33,6 +35,7 @@ export default function HomePage(props) {
     const [mode, setMode] = useState("search");
 
     const searchBarRef = useRef(null);
+    const messageInputRef = useRef(null);
 
     useEffect(() => {
         fetchChats();
@@ -189,6 +192,22 @@ export default function HomePage(props) {
         setSelectedChat(chat);
     }
 
+    const getConvertedChatName = (chat) => {
+        if(chat == null) return;
+        if(chat.chatType == "PERSONAL") {
+            const authenticatedUsername = localStorage.getItem("username");
+            const hyphenIndex = chat.name.indexOf("-");
+            const firstUsername = chat.name.substring(0, hyphenIndex - 1);
+            const secondUsername = chat.name.substring(hyphenIndex + 2);
+            console.log("First Username - " + firstUsername);
+            console.log("Second Username - " + secondUsername);
+            if(authenticatedUsername === firstUsername) {
+                return secondUsername;
+            }
+            return firstUsername;
+        }
+        return chat.name;
+    }
     console.log(foundChats);
     console.log(sidebarOnHover);
     console.log(selectedChat);
@@ -244,7 +263,20 @@ export default function HomePage(props) {
                 </div>     
             </div>
             <div className="selected-chat">
+                <div className="top-panel">
+                    <div className="top-panel-chat-name">
+                        {getConvertedChatName(selectedChat)}
+                    </div>
+                </div>
+                <div className="messages">
 
+                </div>
+                <div className="send-message-panel">
+                    <input type="text" placeHolder={messageInputPlaceholder} ref={messageInputRef} className="message-input"/>
+                    <button className="send-message-button">
+                        <FontAwesomeIcon icon={faPaperPlane} size="lg"/>
+                    </button>
+                </div>
             </div>  
         </div>
     );
