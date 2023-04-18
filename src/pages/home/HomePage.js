@@ -29,6 +29,7 @@ export default function HomePage(props) {
     const [foundUsers, setFoundUsers] = useState([]);
     const [foundChats, setFoundChats] = useState([]);
     const [selectedUsers, setSelectedUsers] = useState([]);
+    const [selectedChat, setSelectedChat] = useState(null);
     const [mode, setMode] = useState("search");
 
     const searchBarRef = useRef(null);
@@ -184,8 +185,13 @@ export default function HomePage(props) {
         })
     }
 
+    const selectPersonalChat = (chat) => {
+        setSelectedChat(chat);
+    }
+
     console.log(foundChats);
     console.log(sidebarOnHover);
+    console.log(selectedChat);
 
     return (
         <div className="main">
@@ -226,10 +232,11 @@ export default function HomePage(props) {
                     <ViewFoundUsers foundUsers={foundUsers} 
                                     foundChats={foundChats} 
                                     onUserClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} 
+                                    selectedChat={selectedChat}
                                     mode={mode} 
                                     searchBarValue={searchBarValue}
                                     /> }
-                    {searchBarValue === "" && !showProfileWindow && !showMenuOptions && !showAddChatWindow && <ViewFoundChats foundChats={allChats} />}
+                    {searchBarValue === "" && !showProfileWindow && !showMenuOptions && !showAddChatWindow && <ViewFoundChats foundChats={allChats} onChatClick={(chat) => selectPersonalChat(chat)} selectedChat={selectedChat}/>}
                     
                     <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
                         <FontAwesomeIcon icon={faEdit} size="lg" />

@@ -21,13 +21,13 @@ export default function ViewChat(props) {
         return chat.name;
     }
     return (
-        <div className={props.showChatWindow ? "chat-window" : "no-display"}
-             onClick={() => props.onClick()}>
+        <div className={props.showChatWindow ? props.isSelected ? "chat-window selected" : "chat-window" : "no-display"}
+             onClick={() => props.onClick(props.chat)}>
             <div className="chat-info">
                 <div className="icon">
                     <FontAwesomeIcon icon={props.chat.chatType === "PERSONAL" ? faMessage : faUserGroup} size="lg"/>
                 </div>
-                <div className="chat-name">
+                <div className={props.isSelected ? "chat-name-selected" : "chat-name"}>
                     {getConvertedChatName(props.chat)}
                 </div>
             </div>

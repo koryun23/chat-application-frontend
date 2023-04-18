@@ -32,3 +32,12 @@
     left: 20%;
     font-family: cursive;
 }
+
+.selected-chat-name {
+    font-size: 23px;
+}
+
+.selected {
+    background-color: rgb(200, 200, 200);
+    font-size: 23px;
+}
