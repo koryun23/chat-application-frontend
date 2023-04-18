@@ -34,7 +34,11 @@
 }
 
 .selected-chat-name {
+    font-weight: lighter;
     font-size: 23px;
+    position: absolute;
+    left: 23%;
+    font-family: cursive;
 }
 
 .selected {

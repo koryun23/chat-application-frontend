@@ -5,7 +5,7 @@ import ViewChat from "./ViewChat";
 export default function ViewFoundChats(props) {
 
     const chats = props.foundChats.map(chat => (
-        <ViewChat chat={chat} showChatWindow={true} isSelected={chat.name === props.selectedChat.name} onClick={(chat) => onChatClick(chat)} />
+        <ViewChat chat={chat} showChatWindow={true} isSelected={chat === props.selectedChat} onClick={(chat) => onChatClick(chat)} />
     ));
 
     const onChatClick = (chat) => {

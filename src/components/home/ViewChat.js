@@ -27,7 +27,7 @@ export default function ViewChat(props) {
                 <div className="icon">
                     <FontAwesomeIcon icon={props.chat.chatType === "PERSONAL" ? faMessage : faUserGroup} size="lg"/>
                 </div>
-                <div className={props.isSelected ? "chat-name-selected" : "chat-name"}>
+                <div className={props.isSelected ? "selected-chat-name" : "chat-name"}>
                     {getConvertedChatName(props.chat)}
                 </div>
             </div>
