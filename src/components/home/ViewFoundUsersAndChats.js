@@ -1,11 +1,12 @@
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import "../../css/home/ViewFoundUsers.css";
+import "../../css/home/ViewFoundUsersAndChats.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ViewProfileWindow from "./ViewProfileWindow";
 import ViewChat from "./ViewChat";
-export default function ViewFoundUsers(props) {
+
+export default function ViewFoundUsersAndChats(props) {
 
     const users = props.foundUsers.map((user, index) => (
         <ViewProfileWindow showProfileWindow={user.username !== localStorage.getItem("username")}

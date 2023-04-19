@@ -7,7 +7,7 @@ import { useState } from "react";
 import MenuOptions from "../../components/home/MenuOptions";
 import AddChatWindow from "../../components/home/AddChatWindow";
 import ViewProfileWindow from "../../components/home/ViewProfileWindow";
-import ViewFoundUsers from "../../components/home/ViewFoundUsers";
+import ViewFoundUsers from "../../components/home/ViewFoundUsersAndChats";
 import ViewFoundChats from "../../components/home/ViewFoundChats";
 import SelectedChat from "../../components/home/SelectedChat";
 
@@ -36,7 +36,6 @@ export default function HomePage(props) {
     const [mode, setMode] = useState("search");
 
     const searchBarRef = useRef(null);
-    const messageInputRef = useRef(null);
 
     useEffect(() => {
         fetchChats();
@@ -117,14 +116,6 @@ export default function HomePage(props) {
         }
     }
 
-    const onMessageInputChange = (event) => {
-        setMessageValue(event.target.value);
-    }
-
-    const sendMessage = () => {
-        
-    }
-
     const searchWithKeyWord = (keyWord) => {
         if(!keyWord) return;
         console.log(localStorage.getItem("token"));
@@ -201,22 +192,6 @@ export default function HomePage(props) {
         setSelectedChat(chat);
     }
 
-    const getConvertedChatName = (chat) => {
-        if(chat == null) return;
-        if(chat.chatType == "PERSONAL") {
-            const authenticatedUsername = localStorage.getItem("username");
-            const hyphenIndex = chat.name.indexOf("-");
-            const firstUsername = chat.name.substring(0, hyphenIndex - 1);
-            const secondUsername = chat.name.substring(hyphenIndex + 2);
-            console.log("First Username - " + firstUsername);
-            console.log("Second Username - " + secondUsername);
-            if(authenticatedUsername === firstUsername) {
-                return secondUsername;
-            }
-            return firstUsername;
-        }
-        return chat.name;
-    }
     console.log(foundChats);
     console.log(sidebarOnHover);
     console.log(selectedChat);
@@ -265,7 +240,13 @@ export default function HomePage(props) {
                                     mode={mode} 
                                     searchBarValue={searchBarValue}
                                     /> }
-                    {searchBarValue === "" && !showProfileWindow && !showMenuOptions && !showAddChatWindow && <ViewFoundChats foundChats={allChats} onChatClick={(chat) => selectPersonalChat(chat)} selectedChat={selectedChat}/>}
+                    {searchBarValue === "" && 
+                     !showProfileWindow && 
+                     !showMenuOptions && 
+                     !showAddChatWindow && 
+                     <ViewFoundChats foundChats={allChats} 
+                                     onChatClick={(chat) => selectPersonalChat(chat)} 
+                                     selectedChat={selectedChat} />}
                     
                     <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
                         <FontAwesomeIcon icon={faEdit} size="lg" />
