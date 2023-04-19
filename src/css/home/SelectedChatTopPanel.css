@@ -1,0 +1,18 @@
+.top-panel {
+    position: absolute;
+    left: 20%;
+    width: 80%;
+    height: 10%;
+    background-color:rgb(244, 244, 244)
+}
+
+.top-panel-chat-name {
+    position: absolute;
+    height: 50%;
+    color: black;
+    font-family: cursive;
+    font-size: 25px;
+    left: 5%;
+    top: 25%;
+    bottom: 25%;
+}

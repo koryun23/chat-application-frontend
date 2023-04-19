@@ -9,6 +9,7 @@ import AddChatWindow from "../../components/home/AddChatWindow";
 import ViewProfileWindow from "../../components/home/ViewProfileWindow";
 import ViewFoundUsers from "../../components/home/ViewFoundUsers";
 import ViewFoundChats from "../../components/home/ViewFoundChats";
+import SelectedChat from "../../components/home/SelectedChat";
 
 const API_URL = "http://localhost:8080";
 
@@ -116,6 +117,14 @@ export default function HomePage(props) {
         }
     }
 
+    const onMessageInputChange = (event) => {
+        setMessageValue(event.target.value);
+    }
+
+    const sendMessage = () => {
+        
+    }
+
     const searchWithKeyWord = (keyWord) => {
         if(!keyWord) return;
         console.log(localStorage.getItem("token"));
@@ -211,6 +220,7 @@ export default function HomePage(props) {
     console.log(foundChats);
     console.log(sidebarOnHover);
     console.log(selectedChat);
+    console.log(messageValue);
 
     return (
         <div className="main">
@@ -262,22 +272,7 @@ export default function HomePage(props) {
                     </button>
                 </div>     
             </div>
-            <div className={selectedChat !== null ? "selected-chat" : "no-display"}>
-                <div className="top-panel">
-                    <div className="top-panel-chat-name">
-                        {getConvertedChatName(selectedChat)}
-                    </div>
-                </div>
-                <div className="messages">
-
-                </div>
-                <div className="send-message-panel">
-                    <input type="text" placeHolder={messageInputPlaceholder} ref={messageInputRef} className="message-input"/>
-                    <button className="send-message-button">
-                        <FontAwesomeIcon icon={faPaperPlane} size="lg"/>
-                    </button>
-                </div>
-            </div>  
+            <SelectedChat selectedChat={selectedChat}/>
         </div>
     );
 }
