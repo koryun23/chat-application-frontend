@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
 
+const API_URL = "http://localhost:8080";
+
 export default function SendMessagePanel(props) {
 
     const [messageInputPlaceholder, setMessageInputPlaceholder] = useState("Message");
@@ -16,7 +18,48 @@ export default function SendMessagePanel(props) {
     }
 
     const sendMessage = () => {
+        console.log("sending a message");
+        const chat = props.selectedChat;
+        const stompClient = props.stompClient;
 
+        if(chat.chatType === "PERSONAL") {
+            stompClient.send(API_URL + "/private-message", {
+                "Authorization" : "Bearer " + localStorage.getItem("token"),
+                "Content-Type" : "application/json"
+            }, JSON.stringify(
+                {
+                    "message" : messageInputValue,
+                    "sentTo" : getSentTo(chat),
+                    "sentBy" : localStorage.getItem("username")
+                }
+            ));
+        } else if(chat.chatType === "GROUP") {
+            stompClient.send("/app/public-message", {}, JSON.stringify(
+                {
+                    "message" : messageInputValue,
+                    "sentBy" : localStorage.getItem("username"),
+                    "chat" : chat.name
+                }
+            ))
+        }
+
+        setMessageInputValue("");
+    }
+
+    
+    const getSentTo = (chat) => {
+        if(chat == null) return;
+        if(chat.chatType == "PERSONAL") {
+            const authenticatedUsername = localStorage.getItem("username");
+            const hyphenIndex = chat.name.indexOf("-");
+            const firstUsername = chat.name.substring(0, hyphenIndex - 1);
+            const secondUsername = chat.name.substring(hyphenIndex + 2);
+            if(authenticatedUsername === firstUsername) {
+                return secondUsername;
+            }
+            return firstUsername;
+        }
+        return chat.name;
     }
     
     return (

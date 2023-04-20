@@ -11,8 +11,6 @@ export default function ViewChat(props) {
             const hyphenIndex = chat.name.indexOf("-");
             const firstUsername = chat.name.substring(0, hyphenIndex - 1);
             const secondUsername = chat.name.substring(hyphenIndex + 2);
-            console.log("First Username - " + firstUsername);
-            console.log("Second Username - " + secondUsername);
             if(authenticatedUsername === firstUsername) {
                 return secondUsername;
             }

@@ -10,23 +10,24 @@ import ViewProfileWindow from "../../components/home/ViewProfileWindow";
 import ViewFoundUsers from "../../components/home/ViewFoundUsersAndChats";
 import ViewFoundChats from "../../components/home/ViewFoundChats";
 import SelectedChat from "../../components/home/SelectedChat";
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 
 const API_URL = "http://localhost:8080";
+const WS_URL = "wss://localhost:8080/ws";
 
 export default function HomePage(props) {
 
+    const [stompClient, setStompClient] = useState(null);
+
     const [searchBarPlaceholder, setSearchBarPlaceholder] = useState("");
-    const [messageInputPlaceholder, setMessageInputPlaceholder] = useState("Message");
     const [searchBarValue, setSearchBarValue] = useState("");
-    const [messageValue, setMessageValue] = useState("");
 
     const [sidebarOnHover, setSidebarOnHover] = useState(false);
 
     const [showMenuOptions, setShowMenuOptions] = useState(false);
     const [showAddChatWindow, setShowAddChatWindow] = useState(false);
     const [showProfileWindow, setShowProfileWindow] = useState(false);
-    const [showFoundChats, setShowFoundChats] = useState(false);
-    const [showFoundUsers, setShowFoundUserns] = useState(false);
 
     const [allChats, setAllChats] = useState([]);
     const [foundUsers, setFoundUsers] = useState([]);
@@ -37,8 +38,40 @@ export default function HomePage(props) {
 
     const searchBarRef = useRef(null);
 
+    const getConvertedChatName = (chat) => {
+        if(chat == null) return;
+        if(chat.chatType == "PERSONAL") {
+            const authenticatedUsername = localStorage.getItem("username");
+            const hyphenIndex = chat.name.indexOf("-");
+            const firstUsername = chat.name.substring(0, hyphenIndex - 1);
+            const secondUsername = chat.name.substring(hyphenIndex + 2);
+            console.log("First Username - " + firstUsername);
+            console.log("Second Username - " + secondUsername);
+            if(authenticatedUsername === firstUsername) {
+                return secondUsername;
+            }
+            return firstUsername;
+        }
+        return chat.name;
+    }
+    
     useEffect(() => {
         fetchChats();
+        let socket = new SockJS(API_URL + "/ws");
+        console.log(socket);
+        let client = Stomp.over(socket);
+        console.log(client.connected);
+        client.connect({
+            "Authorization" : "Bearer " + localStorage.getItem("token"),
+            "Content-Type" : "application/json"
+        }, function(frame) {
+            client.subscribe("/user/" + localStorage.getItem("username"), function(response) {
+                console.log(response);
+            });
+            console.log(frame);
+        });
+        console.log(client.connected);
+        setStompClient(client);
     }, []);
 
     const onLogOut = () => {
@@ -76,8 +109,6 @@ export default function HomePage(props) {
         setFoundUsers([]);
         setMode("");
         setSelectedUsers([]);
-        console.log(showProfileWindow);
-
     }
 
     const onClickNewMessage = () => {
@@ -168,6 +199,7 @@ export default function HomePage(props) {
         ).then(res => {
             console.log(res);
             fetchChats();
+
         }).catch(err => {
             setSearchBarValue("");
             console.log(err);
@@ -175,6 +207,7 @@ export default function HomePage(props) {
     }
 
     const fetchChats = () => {
+        console.log("fetching chats");
         axios.get(API_URL + "/chat", {
             headers: {
                 "Authorization" : "Bearer " + localStorage.getItem("token"),
@@ -191,11 +224,6 @@ export default function HomePage(props) {
     const selectPersonalChat = (chat) => {
         setSelectedChat(chat);
     }
-
-    console.log(foundChats);
-    console.log(sidebarOnHover);
-    console.log(selectedChat);
-    console.log(messageValue);
 
     return (
         <div className="main">
@@ -253,7 +281,7 @@ export default function HomePage(props) {
                     </button>
                 </div>     
             </div>
-            <SelectedChat selectedChat={selectedChat}/>
+            <SelectedChat selectedChat={selectedChat} stompClient={stompClient}/>
         </div>
     );
 }
