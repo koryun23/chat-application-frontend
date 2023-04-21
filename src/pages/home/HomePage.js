@@ -14,11 +14,10 @@ import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 
 const API_URL = "http://localhost:8080";
-const WS_URL = "wss://localhost:8080/ws";
+
+var stompClient = null;
 
 export default function HomePage(props) {
-
-    const [stompClient, setStompClient] = useState(null);
 
     const [searchBarPlaceholder, setSearchBarPlaceholder] = useState("");
     const [searchBarValue, setSearchBarValue] = useState("");
@@ -55,23 +54,32 @@ export default function HomePage(props) {
         return chat.name;
     }
     
+    const onConnected = () => {
+        console.log("connect");
+        stompClient.subscribe("/app/user/" + localStorage.getItem("username"), function(response) {
+            console.log(response);
+        }, {
+            "Authorization" : "Bearer" + localStorage.getItem("token"),
+            "Content-Type" : "application/json"
+        });
+    }
+
+    const onError = (error) => {
+        console.log("could not connect");
+        console.log(error);
+    }
+
+    const connect = () => {
+        let socket = new SockJS(API_URL + "/ws");
+        stompClient = Stomp.over(socket);
+        const headers = {
+            "Authorization" : "Bearer " + localStorage.getItem("token"),
+        }
+        stompClient.connect(headers, onConnected, onError);
+    }
+
     useEffect(() => {
         fetchChats();
-        let socket = new SockJS(API_URL + "/ws");
-        console.log(socket);
-        let client = Stomp.over(socket);
-        console.log(client.connected);
-        client.connect({
-            "Authorization" : "Bearer " + localStorage.getItem("token"),
-            "Content-Type" : "application/json"
-        }, function(frame) {
-            client.subscribe("/user/" + localStorage.getItem("username"), function(response) {
-                console.log(response);
-            });
-            console.log(frame);
-        });
-        console.log(client.connected);
-        setStompClient(client);
     }, []);
 
     const onLogOut = () => {
@@ -216,6 +224,7 @@ export default function HomePage(props) {
             data: {}
         }).then(res => {
             setAllChats(res.data.chatDtoList);
+            connect();
         }).catch(err => {
             console.log(err);
         })
