@@ -17,18 +17,6 @@ export default function MessagesPanel(props) {
         messagesEndReference.current.scrollIntoView({behavior: "smooth"});
     }
 
-    useEffect(() => {
-        fetchMessages();
-    }, [props.selectedChat]);
-
-    useEffect(() => {
-        fetchMessages();
-        if(props.update == true) props.setUpdateToFalse();
-    }, [props.update, props.selectedChat])
-
-    useEffect(scrollToEnd, [messages]);
-
-
     const fetchMessages = () => {
         if(props.selectedChat == null) return;
         axios.get(API_URL + "/messages/fetch/" + props.selectedChat.chatId, {
@@ -45,16 +33,22 @@ export default function MessagesPanel(props) {
         });
     }
 
-    console.log(props.update);
+    useEffect(scrollToEnd, [messages]); // scroll to end when messages change
 
-    const messageElements = messages.map((message, index) => (
+    useEffect(fetchMessages, [props.selectedChat, props.update]); // fetch messages when user selects a chat or when a new messages is sent
+
+    useEffect(() => props.setUpdateToFalse(), [messages]) // set the message list retrieval boolean to false when messages have already been retrieved
+
+    const messageElements = messages.map((message) => (
         <Message message={message} sentBySelf={message.username == localStorage.getItem("username")}/>
-    ));
+    )); // messages that are displayed on the page
+
+    const dummyDiv = <div ref={messagesEndReference}></div> // a dummy div which is used for the scrollbar
 
     return (
         <div className="messages">
             {messageElements}
-            <div ref={messagesEndReference}></div>
+            {dummyDiv}             
         </div>
     );
 }

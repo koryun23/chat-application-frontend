@@ -18,10 +18,14 @@ export default function SelectedChat(props) {
         setUpdateMessagesInSelectedChat(true);
     }
 
+    const onSetUpdateToFalse = () => {
+        setUpdateMessagesInSelectedChat(false);
+    }
+
     if(props.selectedChat) return (
         <div className={props.selectedChat != null ? "selected-chat" : "no-display"}>
             <SelectedChatTopPanel selectedChat={props.selectedChat} stompClient={props.stompClient} />
-            <MessagesPanel selectedChat={props.selectedChat} stompClient={props.stompClient} update={updateMessagesInSelectedChat} setUpdateToFalse={() => setUpdateMessagesInSelectedChat(false)}/>
+            <MessagesPanel selectedChat={props.selectedChat} stompClient={props.stompClient} update={updateMessagesInSelectedChat} setUpdateToFalse={onSetUpdateToFalse}/>
             <SendMessagePanel selectedChat={props.selectedChat} stompClient={props.stompClient} onSend={onSend}/>
         </div>  
     );
