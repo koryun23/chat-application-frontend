@@ -12,11 +12,17 @@ import { Client, Stomp } from "@stomp/stompjs";
 
 export default function SelectedChat(props) {
     
+    const [updateMessagesInSelectedChat, setUpdateMessagesInSelectedChat] = useState(false);
+
+    const onSend = () => {
+        setUpdateMessagesInSelectedChat(true);
+    }
+
     if(props.selectedChat) return (
         <div className={props.selectedChat != null ? "selected-chat" : "no-display"}>
             <SelectedChatTopPanel selectedChat={props.selectedChat} stompClient={props.stompClient} />
-            <MessagesPanel selectedChat={props.selectedChat} stompClient={props.stompClient}/>
-            <SendMessagePanel selectedChat={props.selectedChat} stompClient={props.stompClient}/>
+            <MessagesPanel selectedChat={props.selectedChat} stompClient={props.stompClient} update={updateMessagesInSelectedChat} setUpdateToFalse={() => setUpdateMessagesInSelectedChat(false)}/>
+            <SendMessagePanel selectedChat={props.selectedChat} stompClient={props.stompClient} onSend={onSend}/>
         </div>  
     );
 }

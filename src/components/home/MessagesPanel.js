@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../../css/home/MessagesPanel.css";
 
 import Message from "./Message";
@@ -10,10 +10,24 @@ const API_URL = "http://localhost:8080";
 export default function MessagesPanel(props) {
     
     const [messages, setMessages] = useState([]);
+    
+    const messagesEndReference = useRef(null);
+
+    const scrollToEnd = () => {
+        messagesEndReference.current.scrollIntoView({behavior: "smooth"});
+    }
 
     useEffect(() => {
         fetchMessages();
     }, [props.selectedChat]);
+
+    useEffect(() => {
+        fetchMessages();
+        if(props.update == true) props.setUpdateToFalse();
+    }, [props.update, props.selectedChat])
+
+    useEffect(scrollToEnd, [messages]);
+
 
     const fetchMessages = () => {
         if(props.selectedChat == null) return;
@@ -31,6 +45,8 @@ export default function MessagesPanel(props) {
         });
     }
 
+    console.log(props.update);
+
     const messageElements = messages.map((message, index) => (
         <Message message={message} sentBySelf={message.username == localStorage.getItem("username")}/>
     ));
@@ -38,6 +54,7 @@ export default function MessagesPanel(props) {
     return (
         <div className="messages">
             {messageElements}
+            <div ref={messagesEndReference}></div>
         </div>
     );
 }

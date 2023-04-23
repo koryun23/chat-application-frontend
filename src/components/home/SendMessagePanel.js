@@ -32,6 +32,7 @@ export default function SendMessagePanel(props) {
                     "sentBy" : localStorage.getItem("username")
                 }
             ));
+            props.onSend();
         } else if(chat.chatType === "GROUP") {
             stompClient.send("/app/public-message", {}, JSON.stringify(
                 {
