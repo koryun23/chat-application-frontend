@@ -13,7 +13,7 @@ export default function MessagesPanel(props) {
 
     useEffect(() => {
         fetchMessages();
-    }, []);
+    }, [props.selectedChat]);
 
     const fetchMessages = () => {
         if(props.selectedChat == null) return;
@@ -32,7 +32,7 @@ export default function MessagesPanel(props) {
     }
 
     const messageElements = messages.map((message, index) => (
-        <Message message={message} sentBySelf={index % 2 == 0}/>
+        <Message message={message} sentBySelf={message.username == localStorage.getItem("username")}/>
     ));
 
     return (
