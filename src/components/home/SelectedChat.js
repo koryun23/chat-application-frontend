@@ -12,10 +12,10 @@ import { Client, Stomp } from "@stomp/stompjs";
 
 export default function SelectedChat(props) {
     
-    return (
-        <div className={props.selectedChat !== null ? "selected-chat" : "no-display"}>
-            <SelectedChatTopPanel selectedChat={props.selectedChat} />
-            <MessagesPanel selectedChat={props.selectedChat}/>
+    if(props.selectedChat) return (
+        <div className={props.selectedChat != null ? "selected-chat" : "no-display"}>
+            <SelectedChatTopPanel selectedChat={props.selectedChat} stompClient={props.stompClient} />
+            <MessagesPanel selectedChat={props.selectedChat} stompClient={props.stompClient}/>
             <SendMessagePanel selectedChat={props.selectedChat} stompClient={props.stompClient}/>
         </div>  
     );

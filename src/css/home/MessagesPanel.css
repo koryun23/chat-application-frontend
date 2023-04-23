@@ -1,3 +1,11 @@
 .messages {
     overflow-y: auto;
+    position: absolute;
+    bottom: 10%;
+    top: 10%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 95%;
+    height: 70%;
+    left: 5%;
 }

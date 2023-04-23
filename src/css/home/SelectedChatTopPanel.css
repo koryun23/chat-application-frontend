@@ -1,7 +1,6 @@
 .top-panel {
     position: absolute;
-    left: 20%;
-    width: 80%;
+    width: 100%;
     height: 10%;
     background-color:rgb(244, 244, 244)
 }

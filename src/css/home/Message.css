@@ -1,0 +1,27 @@
+.message-line {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 50px;
+    float: left;
+}
+
+.message-container {
+    width: 45%;
+    word-wrap: break-word;
+
+}
+
+.message {
+    height: auto;
+    width: auto;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+    float: left;
+}
+
+.sent-by-self {
+    float: right;
+}

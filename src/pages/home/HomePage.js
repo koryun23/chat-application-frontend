@@ -56,7 +56,7 @@ export default function HomePage(props) {
     
     const onConnected = () => {
         console.log("connect");
-        stompClient.subscribe("/app/user/" + localStorage.getItem("username"), function(response) {
+        stompClient.subscribe("/ws/user/" + localStorage.getItem("username"), function(response) {
             console.log(response);
         }, {
             "Authorization" : "Bearer" + localStorage.getItem("token"),

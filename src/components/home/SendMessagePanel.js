@@ -23,9 +23,8 @@ export default function SendMessagePanel(props) {
         const stompClient = props.stompClient;
 
         if(chat.chatType === "PERSONAL") {
-            stompClient.send(API_URL + "/private-message", {
+            stompClient.send("/app/private-message", {
                 "Authorization" : "Bearer " + localStorage.getItem("token"),
-                "Content-Type" : "application/json"
             }, JSON.stringify(
                 {
                     "message" : messageInputValue,
@@ -65,7 +64,7 @@ export default function SendMessagePanel(props) {
     return (
         <div className="send-message-panel">
             <input type="text" 
-                   placeHolder={messageInputPlaceholder} 
+                   placeholder={messageInputPlaceholder} 
                    ref={messageInputRef} 
                    className="message-input" 
                    onChange={(event) => onMessageInputChange(event)} 
