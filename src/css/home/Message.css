@@ -3,11 +3,6 @@
     width: 100%;
 
   }
-  
-  /* Darker chat container */
-  .darker {
-
-  }
 
   .message-box {
     border: 2px solid #dedede;
@@ -18,6 +13,7 @@
     width: 45%;
     height: auto;
     border-radius: 20px;
+    overflow-wrap: break-word;
   }
 
   .sent-by-self {
