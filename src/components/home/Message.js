@@ -7,15 +7,17 @@ export default function Message(props) {
     
     return (
         <div className={props.sentBySelf ? "container darker" : "container"}>
-            {!props.sentBySelf && <p className="sender">{props.message.username}</p>}
-            <p>{props.message.message}</p>
-            <span className={props.sentBySelf ? "time-left" : "time-right"}>{props.message.sentAt.slice(11, 16)}</span>
-            {props.sentBySelf && 
-            <div className="avatar">
-                <FontAwesomeIcon icon={faUser} size="2x"/>
+            <div className={props.sentBySelf ? "message-box sent-by-self" : "message-box"}>
+                {!props.sentBySelf && <p className="sender">{props.message.username}</p>}
+                <p>{props.message.message}</p>
+                <span className={props.sentBySelf ? "time-right" : "time-right"}>{props.message.sentAt.slice(11, 16)}</span>
+                {/* {props.sentBySelf && 
+                <div className="avatar">
+                    <FontAwesomeIcon icon={faUser} size="2x"/>
+                </div>
+                } */}
             </div>
-            }
-            {/* <p className={props.sentBySelf ? "time" : "time"}>{props.message.sentAt.slice(11, 16)}</p> */}
+
         </div>
 
     );

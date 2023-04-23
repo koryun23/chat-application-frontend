@@ -1,25 +1,50 @@
 /* Chat containers */
 .container {
-    border: 2px solid #dedede;
-    background-color: #f1f1f1;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0;
-    max-width: 90%;
+    width: 100%;
 
   }
   
   /* Darker chat container */
   .darker {
+
+  }
+
+  .message-box {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    max-width: 60%;
+    width: 45%;
+    height: auto;
+  }
+
+  .sent-by-self {
     border-color: #ccc;
     background-color: #ddd;
+    float: right;
+    max-width: 60%;
+    width: 45%;
   }
   
   /* Clear floats */
-  .container::after {
+  .container:after {
     content: "";
     clear: both;
     display: table;
+  }
+
+  .message-box:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .sent-by-self:after {
+    content: "";
+    clear: both;
+    display: table
   }
   
   /* Style time text */
