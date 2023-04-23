@@ -12,12 +12,12 @@
   .message-box {
     border: 2px solid #dedede;
     background-color: #f1f1f1;
-    border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
     max-width: 60%;
     width: 45%;
     height: auto;
+    border-radius: 20px;
   }
 
   .sent-by-self {
