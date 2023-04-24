@@ -27,7 +27,6 @@ export default function MessagesPanel(props) {
             data: {}
         }).then(res => {
             setMessages(res.data.messageDtoList);
-            console.log(res);
         }).catch(err => {
             console.log(err);
         });

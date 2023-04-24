@@ -36,7 +36,6 @@ export default function LoginBox(props) {
             console.log(err);
             setErrorMessages(["Provided credentials are incorrect"]);
         });
-        console.log(username, password);
     }
     return (
         <div className = "login-box">

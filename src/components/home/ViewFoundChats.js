@@ -14,10 +14,6 @@ export default function ViewFoundChats(props) {
     const onChatClick = (chat) => {
         props.onChatClick(chat);
     }
-
-    
-
-    console.log(chats);
     
     return (
         <div className={props.foundChats.length > 0 ? "chats-window" : "no-display"}>
