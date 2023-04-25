@@ -31,19 +31,15 @@ export default function SendMessagePanel(props) {
                 "sentTo" : getSentTo(chat),
                 "sentBy" : localStorage.getItem("username")
             }
-            stompClient.send("/app/private-message", {
-                "Authorization" : "Bearer " + localStorage.getItem("token"),
-            }, JSON.stringify(
-                payload
-            ));
-            axios.post(API_URL + "/private-message/save", payload, {
+            let config = {
                 "Authorization" : "Bearer " + localStorage.getItem("token"),
                 "Content-Type" : "application/json"
-            }).then(props.onSend).catch(err => console.log(err));
+            }
 
-            // consider sending 2 requests - 1 stomp request for sending a message to the specified topic and 1 http request for storing the message in the database
-
+            stompClient.send("/app/private-message", config, JSON.stringify(payload));
+            axios.post(API_URL + "/private-message/save", payload, config).then(props.onSend).catch(err => console.log(err));
         } else if(chat.chatType === "GROUP") {
+            // TODO: send an http request apart from the stomp request
             stompClient.send("/app/public-message", {}, JSON.stringify(
                 {
                     "message" : messageInputValue,

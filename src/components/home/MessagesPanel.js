@@ -13,6 +13,7 @@ export default function MessagesPanel(props) {
     const [messageElements, setMessageElements] = useState([]);
 
     const scrollToEnd = () => {
+        console.log("scrolling to the end of convo");
         messagesEndReference.current.scrollIntoView({behavior: "smooth"});
     }
     
@@ -24,7 +25,7 @@ export default function MessagesPanel(props) {
         setMessageElements(messageElements);
     }
 
-    useEffect(scrollToEnd, [props.messages]); // scroll to end when messages change
+    useEffect(scrollToEnd, [messageElements]); // scroll to end when messages change
     useEffect(fetchMessageElements, [props.messages]); // fetch message elements when messages change
     
     const dummyDiv = <div ref={messagesEndReference}></div> // a dummy div which is used to scroll to the end when a new message arrives
