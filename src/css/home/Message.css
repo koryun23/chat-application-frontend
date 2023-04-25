@@ -63,10 +63,10 @@
 
   .sender-container {
     float: left;
+    margin-right: 30px;
   }
 
   .message-text-container {
-    margin-left: 20%;
   }
 
   .avatar {

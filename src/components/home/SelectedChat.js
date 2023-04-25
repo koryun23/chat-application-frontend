@@ -30,8 +30,6 @@ export default function SelectedChat(props) {
 
     useEffect(fetchMessages, [props.selectedChat]);
 
-    console.log(messages);
-
     return (
         <div className={props.selectedChat != null ? "selected-chat" : "no-display"}>
             <SelectedChatTopPanel selectedChat={props.selectedChat} stompClient={props.stompClient} />

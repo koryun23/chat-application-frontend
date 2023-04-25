@@ -13,7 +13,6 @@ export default function MessagesPanel(props) {
     const [messageElements, setMessageElements] = useState([]);
 
     const scrollToEnd = () => {
-        console.log("scrolling to the end of convo");
         messagesEndReference.current.scrollIntoView({behavior: "smooth"});
     }
     

@@ -55,12 +55,8 @@ export default function HomePage(props) {
     }
     
     const onConnected = () => {
-        console.log("connect");
-        stompClient.subscribe("/user/" + localStorage.getItem("username"), function(frame) {
-            console.log(frame);
-        }, {
-            "Authorization" : "Bearer" + localStorage.getItem("token"),
-            "Content-Type" : "application/json"
+        stompClient.subscribe("/user/" + localStorage.getItem("username") + "/private", (frame) => console.log(frame), {
+            "Authorization" : "Bearer " + localStorage.getItem("token"),
         });
     }
 
@@ -72,6 +68,8 @@ export default function HomePage(props) {
     const connect = () => {
         let socket = new SockJS(API_URL + "/ws");
         stompClient = Stomp.over(socket);
+        stompClient.heartbeat.incoming = 0;
+        stompClient.heartbeat.outgoing = 20000;
         const headers = {
             "Authorization" : "Bearer " + localStorage.getItem("token"),
         }
