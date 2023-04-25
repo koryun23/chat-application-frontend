@@ -1,32 +1,42 @@
 import React from "react";
+import axios from "axios";
 import "../../css/home/SelectedChat.css";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SelectedChatTopPanel from "./SelectedChatTopPanel";
 import MessagesPanel from "./MessagesPanel";
 import SendMessagePanel from "./SendMessagePanel";
-import SockJS from "sockjs-client";
-import { Client, Stomp } from "@stomp/stompjs";
+
+const API_URL = "http://localhost:8080";
 
 export default function SelectedChat(props) {
     
-    const [updateMessagesInSelectedChat, setUpdateMessagesInSelectedChat] = useState(false);
-
-    const onSend = () => {
-        setUpdateMessagesInSelectedChat(true);
+    const [messages, setMessages] = useState([]);
+    
+    const fetchMessages = () => {
+        if(props.selectedChat == null) return; 
+        axios.get(API_URL + "/messages/fetch/" + props.selectedChat.chatId, {
+            headers: {
+                "Authorization" : "Bearer " + localStorage.getItem("token"),
+                "Content-Type" : "application/json"
+            },  
+            data: {}
+        }).then(res => {
+            setMessages(res.data.messageDtoList);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
-    const onSetUpdateToFalse = () => {
-        setUpdateMessagesInSelectedChat(false);
-    }
+    useEffect(fetchMessages, [props.selectedChat]);
 
-    if(props.selectedChat) return (
+    console.log(messages);
+
+    return (
         <div className={props.selectedChat != null ? "selected-chat" : "no-display"}>
             <SelectedChatTopPanel selectedChat={props.selectedChat} stompClient={props.stompClient} />
-            <MessagesPanel selectedChat={props.selectedChat} stompClient={props.stompClient} update={updateMessagesInSelectedChat} setUpdateToFalse={onSetUpdateToFalse}/>
-            <SendMessagePanel selectedChat={props.selectedChat} stompClient={props.stompClient} onSend={onSend}/>
+            <MessagesPanel selectedChat={props.selectedChat} stompClient={props.stompClient} messages={messages}/>
+            <SendMessagePanel selectedChat={props.selectedChat} stompClient={props.stompClient} onSend={fetchMessages}/>
         </div>  
     );
 }

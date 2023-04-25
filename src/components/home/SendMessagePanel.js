@@ -4,7 +4,8 @@ import "../../css/home/SendMessagePanel.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
-
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 const API_URL = "http://localhost:8080";
 
 export default function SendMessagePanel(props) {
@@ -17,7 +18,8 @@ export default function SendMessagePanel(props) {
         setMessageInputValue(event.target.value);
     }
 
-    const sendMessage = () => {
+    const sendMessage = (event) => {
+        event.preventDefault();
         console.log("sending a message");
         const chat = props.selectedChat;
         const stompClient = props.stompClient;
@@ -32,7 +34,9 @@ export default function SendMessagePanel(props) {
                     "sentBy" : localStorage.getItem("username")
                 }
             ));
-            props.onSend();
+            setTimeout(props.onSend, 100); // THIS MUST BE FIXED!! 
+            // consider sending 2 requests - 1 stomp request for sending a message to the specified topic and 1 http request for storing the message in the database
+
         } else if(chat.chatType === "GROUP") {
             stompClient.send("/app/public-message", {}, JSON.stringify(
                 {
@@ -42,6 +46,7 @@ export default function SendMessagePanel(props) {
                 }
             ))
         }
+        props.onSend();
 
         setMessageInputValue("");
     }
@@ -70,7 +75,7 @@ export default function SendMessagePanel(props) {
                    className="message-input" 
                    onChange={(event) => onMessageInputChange(event)} 
                    value={messageInputValue}/>
-            <button className="send-message-button" onClick={sendMessage}>
+            <button className="send-message-button" onClick={(event) => sendMessage(event)}>
                 <FontAwesomeIcon icon={faPaperPlane} size="lg"/>
             </button>
         </div>
