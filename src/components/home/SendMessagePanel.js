@@ -1,11 +1,12 @@
 import React from "react";
 import "../../css/home/SendMessagePanel.css";
-
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+
 const API_URL = "http://localhost:8080";
 
 export default function SendMessagePanel(props) {
@@ -25,16 +26,21 @@ export default function SendMessagePanel(props) {
         const stompClient = props.stompClient;
 
         if(chat.chatType === "PERSONAL") {
+            let payload = {
+                "message" : messageInputValue,
+                "sentTo" : getSentTo(chat),
+                "sentBy" : localStorage.getItem("username")
+            }
             stompClient.send("/app/private-message", {
                 "Authorization" : "Bearer " + localStorage.getItem("token"),
             }, JSON.stringify(
-                {
-                    "message" : messageInputValue,
-                    "sentTo" : getSentTo(chat),
-                    "sentBy" : localStorage.getItem("username")
-                }
+                payload
             ));
-            setTimeout(props.onSend, 100); // THIS MUST BE FIXED!! 
+            axios.post(API_URL + "/private-message/save", payload, {
+                "Authorization" : "Bearer " + localStorage.getItem("token"),
+                "Content-Type" : "application/json"
+            }).then(props.onSend).catch(err => console.log(err));
+
             // consider sending 2 requests - 1 stomp request for sending a message to the specified topic and 1 http request for storing the message in the database
 
         } else if(chat.chatType === "GROUP") {
