@@ -29,6 +29,7 @@ export default function MessagesPanel(props) {
     
     const dummyDiv = <div ref={messagesEndReference}></div> // a dummy div which is used to scroll to the end when a new message arrives
 
+    console.log(props.messages);
     return (
         <div className={props.selectedChat ? "messages" : "no-display"}>
             {messageElements}

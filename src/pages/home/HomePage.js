@@ -12,6 +12,8 @@ import ViewFoundChats from "../../components/home/ViewFoundChats";
 import SelectedChat from "../../components/home/SelectedChat";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
+import Menu from "../../components/home/Menu";
+import SearchBar from "../../components/home/SearchBar";
 
 const API_URL = "http://localhost:8080";
 
@@ -54,8 +56,12 @@ export default function HomePage(props) {
         return chat.name;
     }
     
+    const onReceivePrivateMessage = (message) => {
+        const payload = JSON.parse(message);
+        
+    }
     const onConnected = () => {
-        stompClient.subscribe("/user/" + localStorage.getItem("username") + "/private", (frame) => console.log(frame), {
+        stompClient.subscribe("/user/" + localStorage.getItem("username") + "/private", onReceivePrivateMessage, {
             "Authorization" : "Bearer " + localStorage.getItem("token"),
         });
     }
@@ -236,19 +242,10 @@ export default function HomePage(props) {
         <div className="main">
             <div className="sidebar" onMouseEnter={() => setSidebarOnHover(true)} onMouseLeave={() => setSidebarOnHover(false)}>
                 <div className="commands">
-                    <div className="menu">
-                        <button className="menu-button" onMouseDown={onClickMenu}>
-                            <FontAwesomeIcon icon={faNavicon} size="lg"/>
-                        </button>
-                    </div>
-                    <div className="search-bar">
-                        <input type="text"
-                               className="search-input"
-                               placeholder={searchBarPlaceholder}
-                               ref={searchBarRef}
-                               onChange={(event) => onSearchBarChange(event)}
-                        />               
-                    </div>
+                    <Menu onClickMenu={onClickMenu}/>
+                    <SearchBar searchBarPlaceholder={searchBarPlaceholder}
+                               searchBarRef={searchBarRef}
+                               onSearchBarChange={onSearchBarChange} />
                 </div>
 
                 <div className="chats">

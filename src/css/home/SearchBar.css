@@ -1,0 +1,26 @@
+.search-bar {
+    float: left;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 80%;
+    height: 100%;
+}
+
+
+.search-input {
+    position: absolute;
+    top: 25%;
+    bottom: 25%;
+    left: 0;
+    right: 0;
+    border: 0ch;
+    border-radius: 20px;
+    background-color: rgb(244, 244, 244);
+    float: left;
+    width: 80%;
+    height: 50%;
+    font-size: 18px;
+    padding-left: 10px;
+}
