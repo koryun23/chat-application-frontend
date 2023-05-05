@@ -19,7 +19,7 @@ export default function MessagesPanel(props) {
     const fetchMessageElements = () => {
         let messageElements = [];
         props.messages.map((message) => (
-            messageElements.push(<Message message={message} sentBySelf={message.username == localStorage.getItem("username")}/>)
+            messageElements.push(<Message message={message} sentBySelf={message.sentBy == localStorage.getItem("username")}/>)
         ))
         setMessageElements(messageElements);
     }
@@ -29,7 +29,6 @@ export default function MessagesPanel(props) {
     
     const dummyDiv = <div ref={messagesEndReference}></div> // a dummy div which is used to scroll to the end when a new message arrives
 
-    console.log(props.messages);
     return (
         <div className={props.selectedChat ? "messages" : "no-display"}>
             {messageElements}

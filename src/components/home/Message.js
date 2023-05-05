@@ -11,7 +11,7 @@ export default function Message(props) {
                 {
                     !props.sentBySelf && 
                     <div className="sender-container">
-                        <p className="sender">{props.message.username}</p>
+                        <p className="sender">{props.message.sentBy}</p>
                     </div>
                 }
                 <div className={!props.sentBySelf ? "message-text-container" : ""}>

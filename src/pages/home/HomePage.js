@@ -14,6 +14,8 @@ import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 import Menu from "../../components/home/Menu";
 import SearchBar from "../../components/home/SearchBar";
+import Commands from "../../components/home/Commands";
+import Chats from "../../components/home/Chats";
 
 const API_URL = "http://localhost:8080";
 
@@ -34,9 +36,10 @@ export default function HomePage(props) {
     const [foundUsers, setFoundUsers] = useState([]);
     const [foundChats, setFoundChats] = useState([]);
     const [selectedUsers, setSelectedUsers] = useState([]);
-    const [selectedChat, setSelectedChat] = useState(null);
+    const [selectedChat, setSelectedChat] = useState(null); 
     const [mode, setMode] = useState("search");
 
+    const [chatsAndMessages, setChatsAndMessages] = useState({});
     const searchBarRef = useRef(null);
 
     const getConvertedChatName = (chat) => {
@@ -56,14 +59,50 @@ export default function HomePage(props) {
         return chat.name;
     }
     
-    const onReceivePrivateMessage = (message) => {
-        const payload = JSON.parse(message);
-        
-    }
-    const onConnected = () => {
-        stompClient.subscribe("/user/" + localStorage.getItem("username") + "/private", onReceivePrivateMessage, {
-            "Authorization" : "Bearer " + localStorage.getItem("token"),
+    const fetchMessagesInChat = (chatName) => {
+        if(props.selectedChat == null) return; 
+        axios.get(API_URL + "/messages/fetch/" + chatName, {
+            headers: {
+                "Authorization" : "Bearer " + localStorage.getItem("token"),
+                "Content-Type" : "application/json"
+            },  
+            data: {}
+        }).then(res => {
+            let messageDtoList = res.data.messageDtoList;
+            setChatsAndMessages({
+                    ...chatsAndMessages,
+                    chatName : messageDtoList
+            });
+        }).catch(err => {
+            console.log(err);
         });
+    }
+
+    const pushMessage = (message) => {
+        let messagesInSelectedChat = chatsAndMessages[message.sentTo].map(m => m);
+        messagesInSelectedChat.push(message);
+        setChatsAndMessages({
+            ...chatsAndMessages,
+            chatName : messagesInSelectedChat
+        });
+    }
+
+    const onReceivePrivateMessage = (message) => {
+        let parsedMessage = JSON.parse(message.body);
+        // let chatName = parsedMessage.sentTo;
+        // console.log(chatsAndMessages);
+        // if(chatName in chatsAndMessages) {
+        //     pushMessage(parsedMessage);
+        // } else {
+        //     fetchMessagesInChat(chatName);
+        // }
+    }
+
+    const onConnected = () => {
+        let config = {
+            "Authorization" : "Bearer " + localStorage.getItem("token"),
+        };
+        stompClient.subscribe("/user/" + localStorage.getItem("username") + "/private", onReceivePrivateMessage, {});
     }
 
     const onError = (error) => {
@@ -84,12 +123,8 @@ export default function HomePage(props) {
 
     useEffect(() => {
         fetchChats();
+        connect();
     }, []);
-
-    const onLogOut = () => {
-        localStorage.clear();
-    }
-
     const onClickMenu = () => {
         setShowMenuOptions(!showMenuOptions);
         setShowAddChatWindow(false);
@@ -228,7 +263,13 @@ export default function HomePage(props) {
             data: {}
         }).then(res => {
             setAllChats(res.data.chatDtoList);
-            connect();
+            res.data.chatDtoList.forEach(chat => {
+                let chatName = chat.name;
+                setChatsAndMessages({
+                        ...chatsAndMessages,
+                        chatName : []
+                })
+            })
         }).catch(err => {
             console.log(err);
         })
@@ -241,51 +282,32 @@ export default function HomePage(props) {
     return (
         <div className="main">
             <div className="sidebar" onMouseEnter={() => setSidebarOnHover(true)} onMouseLeave={() => setSidebarOnHover(false)}>
-                <div className="commands">
-                    <Menu onClickMenu={onClickMenu}/>
-                    <SearchBar searchBarPlaceholder={searchBarPlaceholder}
-                               searchBarRef={searchBarRef}
-                               onSearchBarChange={onSearchBarChange} />
-                </div>
-
-                <div className="chats">
-                    <MenuOptions showMenuOptions={showMenuOptions} 
-                                 options = {[
-                                    {name : "Profile", icon: faUser, onClick: () => onClickViewProfileWindowButton()},
-                                 ]} />
-                    <AddChatWindow showAddChatWindow={showAddChatWindow} 
-                                   options = {[
-                                    {name: "New Message", icon: faUser, onClick: () => onClickNewMessage()},
-                                    {name: "New Group", icon: faUsers, onClick: () => onClickNewGroup()}
-                                   ]}/>
-                    <ViewProfileWindow showProfileWindow={showProfileWindow}
-                                       profile={{
-                                        username: localStorage.getItem("username"),
-                                        firstName: localStorage.getItem("firstName"),
-                                        secondName: localStorage.getItem("secondName")
-                                       }}/>
-                    {searchBarValue !== "" && !showProfileWindow && !showMenuOptions && !showAddChatWindow && 
-                    <ViewFoundUsers foundUsers={foundUsers} 
-                                    foundChats={foundChats} 
-                                    onUserClick={mode == "new-message" ? (user) => selectSingleUser(user) : mode=="new-group" ? (user) => addSingleUser(user) : () => console.log(mode)} 
-                                    selectedChat={selectedChat}
-                                    mode={mode} 
-                                    searchBarValue={searchBarValue}
-                                    /> }
-                    {searchBarValue === "" && 
-                     !showProfileWindow && 
-                     !showMenuOptions && 
-                     !showAddChatWindow && 
-                     <ViewFoundChats foundChats={allChats} 
-                                     onChatClick={(chat) => selectPersonalChat(chat)} 
-                                     selectedChat={selectedChat} />}
-                    
-                    <button className={sidebarOnHover ? "add-chat-button" : "add-chat-button no-display"} onClick={onClickAddChatButton}>
-                        <FontAwesomeIcon icon={faEdit} size="lg" />
-                    </button>
-                </div>     
+                <Commands onClickMenu={onClickMenu} 
+                          searchBarPlaceholder={searchBarPlaceholder}
+                          searchBarRef={searchBarRef}
+                          onSearchBarChange={onSearchBarChange} />
+                <Chats showMenuOptions={showMenuOptions}
+                       showAddChatWindow={showAddChatWindow}
+                       showProfileWindow={showProfileWindow}
+                       searchBarValue={searchBarValue}
+                       foundUsers={foundUsers}
+                       foundChats={foundChats}
+                       mode={mode}
+                       selectedChat={selectedChat}
+                       allChats={allChats}
+                       selectPersonalChat={selectPersonalChat}
+                       sidebarOnHover={sidebarOnHover}
+                       onClickViewProfileWindowButton={onClickViewProfileWindowButton}
+                       onClickAddChatButton={onClickAddChatButton}
+                       onClickNewMessage={onClickNewMessage}
+                       onClickNewGroup={onClickNewGroup}
+                       createPersonalChat={createPersonalChat}
+                       selectSingleUser={selectSingleUser} />
             </div>
-            <SelectedChat selectedChat={selectedChat} stompClient={stompClient}/>
+            {
+                selectedChat &&
+                <SelectedChat selectedChat={selectedChat} stompClient={stompClient} messages={chatsAndMessages[selectedChat.name]} />
+            }
         </div>
     );
 }

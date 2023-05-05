@@ -24,23 +24,30 @@ export default function SendMessagePanel(props) {
         console.log("sending a message");
         const chat = props.selectedChat;
         const stompClient = props.stompClient;
+        console.log(chat.name);
 
         if(chat.chatType === "PERSONAL") {
+            console.log(chat);
             let payload = {
                 "message" : messageInputValue,
-                "sentTo" : getSentTo(chat),
-                "sentBy" : localStorage.getItem("username")
-            }
+                "chatName" : chat.name,
+                "sentBy" : localStorage.getItem("username"),
+                "sentAt" : new Date()
+            };
+
             let config = {
                 "Authorization" : "Bearer " + localStorage.getItem("token"),
                 "Content-Type" : "application/json"
-            }
+            };
 
             stompClient.send("/app/private-message", config, JSON.stringify(payload));
-            axios.post(API_URL + "/private-message/save", payload, config).then(props.onSend).catch(err => console.log(err));
+            axios.post(API_URL + "/private-message/save", payload, {
+                headers : config
+            }).then(props.onSend).catch(err => console.log(err));
+
         } else if(chat.chatType === "GROUP") {
             // TODO: send an http request apart from the stomp request
-            stompClient.send("/app/public-message", {}, JSON.stringify(
+            stompClient.send("/public-message", {}, JSON.stringify(
                 {
                     "message" : messageInputValue,
                     "sentBy" : localStorage.getItem("username"),
