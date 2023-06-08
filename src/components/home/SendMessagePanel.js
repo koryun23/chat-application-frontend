@@ -43,8 +43,12 @@ export default function SendMessagePanel(props) {
             stompClient.send("/app/private-message", config, JSON.stringify(payload));
             axios.post(API_URL + "/private-message/save", payload, {
                 headers : config
-            }).then(props.onSend).catch(err => console.log(err));
-
+            }).then(res => {
+                console.log(res);
+                props.onSend(payload);
+            }
+            ).catch(err => console.log(err));
+            
         } else if(chat.chatType === "GROUP") {
             // TODO: send an http request apart from the stomp request
             stompClient.send("/public-message", {}, JSON.stringify(
@@ -53,9 +57,10 @@ export default function SendMessagePanel(props) {
                     "sentBy" : localStorage.getItem("username"),
                     "chat" : chat.name
                 }
-            ))
+            ));
+            props.onSend();
         }
-        props.onSend();
+        
 
         setMessageInputValue("");
     }

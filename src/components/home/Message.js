@@ -5,6 +5,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 export default function Message(props) {
     
+    console.log(props.message);
     return (
         <div className={props.sentBySelf ? "container darker" : "container"}>
             <div className={props.sentBySelf ? "message-box sent-by-self" : "message-box"}>
@@ -17,7 +18,7 @@ export default function Message(props) {
                 <div className={!props.sentBySelf ? "message-text-container" : ""}>
                     <p>{props.message.message}</p>
                 </div>
-                <span className={props.sentBySelf ? "time-right" : "time-right"}>{props.message.sentAt.slice(11, 16)}</span>
+                <span className={props.sentBySelf ? "time-right" : "time-right"}>time</span>
             </div>
 
         </div>

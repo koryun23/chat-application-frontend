@@ -12,7 +12,7 @@ const API_URL = "http://localhost:8080";
 export default function SelectedChat(props) {
     
     const [messages, setMessages] = useState([]);
-    
+    console.log(props.newMessage);
     const fetchMessages = () => {
         if(props.selectedChat == null) return; 
         axios.get(API_URL + "/messages/fetch/" + props.selectedChat.chatId, {
@@ -33,7 +33,7 @@ export default function SelectedChat(props) {
     return (
         <div className={props.selectedChat != null ? "selected-chat" : "no-display"}>
             <SelectedChatTopPanel selectedChat={props.selectedChat} stompClient={props.stompClient} />
-            <MessagesPanel selectedChat={props.selectedChat} stompClient={props.stompClient} messages={messages}/>
+            <MessagesPanel selectedChat={props.selectedChat} stompClient={props.stompClient} messages={messages} newMessage={props.newMessage}/>
             <SendMessagePanel selectedChat={props.selectedChat} stompClient={props.stompClient} onSend={fetchMessages}/>
         </div>  
     );

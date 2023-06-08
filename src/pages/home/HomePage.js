@@ -40,6 +40,9 @@ export default function HomePage(props) {
     const [mode, setMode] = useState("search");
 
     const [chatsAndMessages, setChatsAndMessages] = useState({});
+    const [selectedChatMessages, setSelectedChatMessages] = useState([]);
+    const [newMessageInSelectedChat, setNewMessageInSelectedChat] = useState(null);
+
     const searchBarRef = useRef(null);
 
     const getConvertedChatName = (chat) => {
@@ -58,44 +61,17 @@ export default function HomePage(props) {
         }
         return chat.name;
     }
-    
-    const fetchMessagesInChat = (chatName) => {
-        if(props.selectedChat == null) return; 
-        axios.get(API_URL + "/messages/fetch/" + chatName, {
-            headers: {
-                "Authorization" : "Bearer " + localStorage.getItem("token"),
-                "Content-Type" : "application/json"
-            },  
-            data: {}
-        }).then(res => {
-            let messageDtoList = res.data.messageDtoList;
-            setChatsAndMessages({
-                    ...chatsAndMessages,
-                    chatName : messageDtoList
-            });
-        }).catch(err => {
-            console.log(err);
-        });
-    }
-
-    const pushMessage = (message) => {
-        let messagesInSelectedChat = chatsAndMessages[message.sentTo].map(m => m);
-        messagesInSelectedChat.push(message);
-        setChatsAndMessages({
-            ...chatsAndMessages,
-            chatName : messagesInSelectedChat
-        });
-    }
 
     const onReceivePrivateMessage = (message) => {
         let parsedMessage = JSON.parse(message.body);
-        // let chatName = parsedMessage.sentTo;
-        // console.log(chatsAndMessages);
-        // if(chatName in chatsAndMessages) {
-        //     pushMessage(parsedMessage);
-        // } else {
-        //     fetchMessagesInChat(chatName);
-        // }
+        console.log(parsedMessage);
+        console.log(selectedChat);
+        if(selectedChat && parsedMessage.chatName === selectedChat.name) {
+            let messages = selectedChatMessages.map(m => m);
+            messages.push(message);
+            setSelectedChatMessages(messages);
+        }
+        setNewMessageInSelectedChat(message);
     }
 
     const onConnected = () => {
@@ -263,20 +239,30 @@ export default function HomePage(props) {
             data: {}
         }).then(res => {
             setAllChats(res.data.chatDtoList);
-            res.data.chatDtoList.forEach(chat => {
-                let chatName = chat.name;
-                setChatsAndMessages({
-                        ...chatsAndMessages,
-                        chatName : []
-                })
-            })
         }).catch(err => {
             console.log(err);
         })
     }
 
+    const fetchMessagesInChat = (chat) => {
+        if(chat == null) return; 
+        axios.get(API_URL + "/messages/fetch/" + chat.chatId, {
+            headers: {
+                "Authorization" : "Bearer " + localStorage.getItem("token"),
+                "Content-Type" : "application/json"
+            },  
+            data: {}
+        }).then(res => {
+            setSelectedChatMessages(res.data.messageDtoList);
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
     const selectPersonalChat = (chat) => {
         setSelectedChat(chat);
+        fetchMessagesInChat(chat);
+        setNewMessageInSelectedChat(null);
     }
 
     return (
@@ -306,7 +292,7 @@ export default function HomePage(props) {
             </div>
             {
                 selectedChat &&
-                <SelectedChat selectedChat={selectedChat} stompClient={stompClient} messages={chatsAndMessages[selectedChat.name]} />
+                <SelectedChat selectedChat={selectedChat} stompClient={stompClient} messages={selectedChatMessages} newMessage={newMessageInSelectedChat}/>
             }
         </div>
     );
