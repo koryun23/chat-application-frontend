@@ -18,7 +18,7 @@ export default function Message(props) {
                 <div className={!props.sentBySelf ? "message-text-container" : ""}>
                     <p>{props.message.message}</p>
                 </div>
-                <span className={props.sentBySelf ? "time-right" : "time-right"}>time</span>
+                <span className={props.sentBySelf ? "time-right" : "time-right"}>{props.message.sentAt.slice(11, 16)}</span>
             </div>
 
         </div>
